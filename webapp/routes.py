@@ -20,8 +20,8 @@ def login():
             url = "http://10.100.0.78:5000/api/login"
             headers = {'Content-Type': 'application/json'}
             payload = {
-                "username": username,
-                "password": password
+                "usuari": username,
+                "contrasenya": password
             }
             
             # Make the POST request to your API
