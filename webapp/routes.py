@@ -95,6 +95,10 @@ def register():
         return render_template('register.html', error=f"An error occurred: {str(e)}")
 
 
+@routes.route('/pg1')
+def pg1():
+    return render_template('pg1.html')
+
 @routes.route('/pg2')
 def pg2():
     return render_template('pg2.html')
