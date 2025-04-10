@@ -31,7 +31,7 @@ def login():
                 data = response.json()
                 print("Login successful:", data)
                 # Process successful login
-                return render_template('pg1.html')
+                return render_template('foro.html')
             else:
                 return jsonify({
                     'status': 'error',
@@ -95,14 +95,22 @@ def register():
         return render_template('register.html', error=f"An error occurred: {str(e)}")
 
 
-@routes.route('/pg1')
-def pg1():
-    return render_template('pg1.html')
+@routes.route('/foro')
+def foro():
+    return render_template('foro.html')
 
-@routes.route('/pg2')
-def pg2():
-    return render_template('pg2.html')
+@routes.route('/escaner')
+def escaner():
+    return render_template('escaner.html')
 
-@routes.route('/pg3')
-def pg3():
-    return render_template('pg3.html')
+@routes.route('/colleccio')
+def colleccio():
+    return render_template('colleccio.html')
+
+@routes.route('/xat')
+def xat():
+    return render_template('xat.html')
+
+@routes.route('/usuari')
+def usuari():
+    return render_template('usuari.html')

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ca">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>La trobada</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="logo">La trobada</div>
+            <div class="nav-links">
+                    <form action="/foro">
+                        <input type="submit" value="Foro">
+                    </form>
+                    <form action="/escaner">
+                        <input type="submit" value="Escaner">
+                    </form>
+                    <form action="/colleccio">
+                        <input type="submit" value="Col·lecció">
+                    </form>
+                    <form action="/xat">
+                        <input type="submit" value="Xat">
+                    </form>
+            </div>
+            <div class="user-section">
+                <div class="user-icon">U</div>
+                <form action="/usuari">
+                    <input type="submit" value="Usuari">
+                </form>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <h1>Benvingut/da a La Trobada</h1>
+            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
+        </main>
+    </body>
+</html>
