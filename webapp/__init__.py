@@ -6,5 +6,5 @@ def create_app():
     # Register blueprints or routes here
     from .routes import routes
     app.register_blueprint(routes, url_prefix='/')
-    
+    app.config["SECRET_KEY"]="test"
     return app

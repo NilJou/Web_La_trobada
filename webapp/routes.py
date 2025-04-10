@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint,jsonify,request
+from flask import Flask, render_template, Blueprint, jsonify, request, session
 import requests
 
 routes = Blueprint('routes', __name__)
@@ -30,6 +30,7 @@ def login():
             if response.status_code == 200:
                 data = response.json()
                 print("Login successful:", data)
+                session['user'] = data.get('user')
                 # Process successful login
                 return render_template('foro.html')
             else:
@@ -102,6 +103,49 @@ def foro():
 @routes.route('/escaner')
 def escaner():
     return render_template('escaner.html')
+
+@routes.route('/carta/web', methods=['GET', 'POST'])
+def carta_web():
+    try:
+        if request.method == 'POST':
+            nom = request.form.get('nom')
+            
+            if not nom:
+                return render_template('escaner.html', error="Si us plau, introdueix un nom de carta")
+            
+            api_url = "http://10.100.0.78:5000/api/carta/web"
+            headers = {'Content-Type': 'application/json'}
+            payload = {"nom": nom}
+            
+            response = requests.post(api_url, json=payload, headers=headers)
+            print(f"[DEBUG] Resposta de l'API (status {response.status_code}):")
+            print(f"Headers: {response.headers}")
+            print(f"Contingut: {response.text}")
+            if response.status_code == 200:
+                cartes = response.json()  # Obtenim la llista de cartes
+                if not cartes:
+                    return render_template('escaner.html',
+                                         nom_buscat=nom,
+                                         error="No s'han trobat cartes amb aquest nom")
+                
+                return render_template('escaner.html',
+                                    nom_buscat=nom,
+                                    cartes=cartes)
+                
+            
+            else:
+                error_msg = response.json().get('error', 'Error en la cerca de cartes')
+                return render_template('escaner.html',
+                                    error=error_msg)
+        
+        return render_template('escaner.html')
+        
+    except requests.exceptions.RequestException as e:
+        return render_template('escaner.html',
+                             error="Error de connexió amb el servidor de cartes")
+    except Exception as e:
+        return render_template('escaner.html',
+                             error=f"Error inesperat: {str(e)}")
 
 @routes.route('/colleccio')
 def colleccio():

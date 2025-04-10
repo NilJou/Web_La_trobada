@@ -33,8 +33,36 @@
 
         <!-- Contenido principal -->
         <main class="main-content">
-            <h1>Benvingut/da a La Trobada</h1>
-            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
+            <h1>Escaneig</h1>
+            
+            {% if error %}
+                <div class="alert error">{{ error }}</div>
+            {% endif %}
+            
+            <form action="/carta/web" method="POST">
+                <input type="text" name="nom" placeholder="Escriu el nom de la carta" required
+                       value="{{ nom_buscat if nom_buscat else '' }}">
+                <button type="submit">Buscar</button>
+            </form>
+        
+            {% if cartes %}
+            <div class="resultats-cartes">
+                <h2>Resultats per: "{{ nom_buscat }}"</h2>
+                <div class="cartes-container">
+                    {% for carta in cartes %}
+                    <div class="carta">
+                        <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
+                             onerror="this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
+                        <div class="carta-info">
+                            <h3>{{ carta.nom }}</h3>
+                            <p>Expansió: {{ carta.expansio }}</p>
+                            <p>ID: {{ carta.id }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </main>
     </body>
 </html>
