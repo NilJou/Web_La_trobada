@@ -52,11 +52,10 @@
                     {% for carta in cartes %}
                     <div class="carta">
                         <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
-                             onerror="this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
+                             onerror="this.onerror=null;this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
                         <div class="carta-info">
                             <h3>{{ carta.nom }}</h3>
                             <p>Expansió: {{ carta.expansio }}</p>
-                            <p>ID: {{ carta.id }}</p>
                         </div>
                     </div>
                     {% endfor %}
