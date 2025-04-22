@@ -52,9 +52,12 @@
             <!-- Títol principal -->
             <h1>Escaneig</h1> 
             
-            <!-- Seccio per mostrar errors -->
+            <!-- Seccio per mostrar errors o èxits -->
             {% if error %}
                 <div class="alert error">{{ error }}</div>
+            {% endif %}
+            {% if success %}
+                <div class="alert success">{{ success }}</div>
             {% endif %}
             
             <!-- Formulari de cerca de cartes -->
@@ -71,6 +74,13 @@
             <div class="resultats-cartes">
                 <!-- Titol amb el terme de cerca -->
                 <h2>Resultats per: "{{ nom_buscat }}"</h2> 
+                
+                <!-- Formulari per crear col·lecció -->
+                <form action="/crear_colleccio" method="POST" class="crear-colleccio-form">
+                    <input type="hidden" name="nom_buscat" value="{{ nom_buscat }}">
+                    <input type="text" name="nom_colleccio" placeholder="Nom de la col·lecció" required>
+                    <button type="submit">Crear Col·lecció</button>
+                </form>
                 
                 <!-- Contenidor de les cartes trobades -->
                 <div class="cartes-container">
