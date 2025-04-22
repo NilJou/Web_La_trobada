@@ -1,18 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
+    <!-- Capçalera del document -->
     <head>
+        <!-- Codificacio de caràcters -->
         <meta charset="UTF-8">
+        <!-- Configuracio per a dispositius mobils -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Titol de la pagina -->
         <title>Register</title>
     </head>
+
+    <!-- Body per al document -->
     <body>
+        <!-- Capçalera de la pàgina -->
         <h1>Register</h1>
+
+        <!-- Formulari de registre -->
         <form method="POST" action="/register">
+            <!-- Camp per introduir el nom d'usuari -->
             <input type="text" name="username" placeholder="Username" required>
+            
+            <!-- Camp per introduir l'adreça de correu electronic -->
             <input type="email" name="email" placeholder="Email" required>
+            
+            <!-- Camp per introduir la contrasenya -->
             <input type="password" name="password" placeholder="Password" required>
+            
+            <!-- Camp per confirmar la contrasenya -->
             <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-            <label id="errores" style="color: red;">{{ error if error else '' }}</label>
+            
+            <!-- Etiqueta per mostrar errors del servidor -->
+            <label id="errores" style="color: red;">
+                <!-- Sintaxi Jinja2 per mostrar errors -->
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+            </label>
+            
+            <!-- Boto per enviar el formulari -->
             <button type="submit">Register</button>
+        </form>
     </body>
 </html>

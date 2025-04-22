@@ -1,61 +1,92 @@
 <!DOCTYPE html>
 <html lang="ca">
+    <!-- Capçalera del document -->
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada</title>
+        <!-- Codificacio de caràcters -->
+        <meta charset="UTF-8"> 
+        <!-- Configuracio per a dispositius mobils -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <!-- Titol de la pagina -->
+        <title>La trobada</title> 
+        <!-- Enllaç a l'arxiu CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
     </head>
+    
+    <!-- Body per al document -->
     <body>
+        <!-- Barra de navegacio superior -->
         <nav class="navbar">
+            <!-- Logo de l'aplicacio -->
             <div class="logo">La trobada</div>
+            
+            <!-- Enllaços de navegacio -->
             <div class="nav-links">
-                    <form action="/foro">
-                        <input type="submit" value="Foro">
-                    </form>
-                    <form action="/escaner">
-                        <input type="submit" value="Escaner">
-                    </form>
-                    <form action="/colleccio">
-                        <input type="submit" value="Col·lecció">
-                    </form>
-                    <form action="/xat">
-                        <input type="submit" value="Xat">
-                    </form>
+                <!-- Formulari de navegacio per a les pagines -->
+                <form action="/foro">
+                    <input type="submit" value="Foro">
+                </form>
+                <form action="/escaner">
+                    <input type="submit" value="Escaner">
+                </form>
+                <form action="/colleccio">
+                    <input type="submit" value="Col·lecció">
+                </form>
+                <form action="/xat">
+                    <input type="submit" value="Xat">
+                </form>
             </div>
+            
+            <!-- Seccio d'usuari -->
             <div class="user-section">
-                <div class="user-icon">U</div>
+                <!-- Icona d'usuari -->
+                <div class="user-icon">U</div> 
+                <!-- Formulari de navegacio per a la pagina d'usuari -->
                 <form action="/usuari">
-                    <input type="submit" value="Usuari">
+                    <input type="submit" value="Usuari"> 
                 </form>
             </div>
         </nav>
 
-        <!-- Contenido principal -->
+        <!-- Contingut principal de la pagina -->
         <main class="main-content">
-            <h1>Escaneig</h1>
+            <!-- Títol principal -->
+            <h1>Escaneig</h1> 
             
+            <!-- Seccio per mostrar errors -->
             {% if error %}
                 <div class="alert error">{{ error }}</div>
             {% endif %}
             
+            <!-- Formulari de cerca de cartes -->
             <form action="/carta/web" method="POST">
+                <!-- Camp de text per introduir el nom de la carta -->
                 <input type="text" name="nom" placeholder="Escriu el nom de la carta" required
                        value="{{ nom_buscat if nom_buscat else '' }}">
-                <button type="submit">Buscar</button>
+                <!-- Boto de cerca -->
+                <button type="submit">Buscar</button> 
             </form>
         
+            <!-- Seccio de resultats -->
             {% if cartes %}
             <div class="resultats-cartes">
-                <h2>Resultats per: "{{ nom_buscat }}"</h2>
+                <!-- Titol amb el terme de cerca -->
+                <h2>Resultats per: "{{ nom_buscat }}"</h2> 
+                
+                <!-- Contenidor de les cartes trobades -->
                 <div class="cartes-container">
+                    <!-- Bucle per mostrar cada carta -->
                     {% for carta in cartes %}
                     <div class="carta">
+                        <!-- Imatge de la carta, amb fallback per si no pot carregarla -->
                         <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
                              onerror="this.onerror=null;this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
+                        
+                        <!-- Informacio de la carta -->
                         <div class="carta-info">
+                            <!-- Nom de la carta -->
                             <h3>{{ carta.nom }}</h3>
-                            <p>Expansió: {{ carta.expansio }}</p>
+                            <!-- Expansio de la carta -->
+                            <p>Expansió: {{ carta.expansio }}</p> 
                         </div>
                     </div>
                     {% endfor %}

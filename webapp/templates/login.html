@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
+    <!-- Capçalera del document -->
     <head>
+        <!-- Codificacio de caràcters -->
         <meta charset="UTF-8">
+        <!-- Configuracio per a dispositius mobils -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Titol de la pagina -->
         <title>Login</title>
     </head>
+
+    <!-- Body per al document -->
     <body>
+        <!-- Capçalera de la pàgina -->
         <h1>Login</h1>
+
+        <!-- Formulari d'inici de sessio -->
         <form method="POST" action="/login">
+            <!-- Camp d'entrada per al nom d'usuari o correu electrònic -->
             <input type="text" name="username" placeholder="Username or Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
             
+            <!-- Camp d'entrada per a la contrasenya -->
+            <input type="password" name="password" placeholder="Password" required>
+            
+            <!-- Boto per enviar el formulari -->
+            <button type="submit">Login</button>
         </form>
+
+        <!-- Enllaç a la pagina de registre per als nous usuaris -->
         <p>No tens un compte? <a href="/register">Registrat aquí</a></p>
     </body>
 </html>
