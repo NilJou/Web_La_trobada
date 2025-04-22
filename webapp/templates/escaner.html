@@ -75,13 +75,6 @@
                 <!-- Titol amb el terme de cerca -->
                 <h2>Resultats per: "{{ nom_buscat }}"</h2> 
                 
-                <!-- Formulari per crear col·lecció -->
-                <form action="/crear_colleccio" method="POST" class="crear-colleccio-form">
-                    <input type="hidden" name="nom_buscat" value="{{ nom_buscat }}">
-                    <input type="text" name="nom_colleccio" placeholder="Nom de la col·lecció" required>
-                    <button type="submit">Crear Col·lecció</button>
-                </form>
-                
                 <!-- Contenidor de les cartes trobades -->
                 <div class="cartes-container">
                     <!-- Bucle per mostrar cada carta -->

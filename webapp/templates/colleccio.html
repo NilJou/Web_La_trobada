@@ -1,40 +1,90 @@
 <!DOCTYPE html>
 <html lang="ca">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-    </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">La trobada</div>
-            <div class="nav-links">
-                    <form action="/foro">
-                        <input type="submit" value="Foro">
-                    </form>
-                    <form action="/escaner">
-                        <input type="submit" value="Escaner">
-                    </form>
-                    <form action="/colleccio">
-                        <input type="submit" value="Col·lecció">
-                    </form>
-                    <form action="/xat">
-                        <input type="submit" value="Xat">
-                    </form>
-            </div>
-            <div class="user-section">
-                <div class="user-icon">U</div>
-                <form action="/usuari">
-                    <input type="submit" value="Usuari">
-                </form>
-            </div>
-        </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La trobada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+    <script>
+        function eliminarColleccio(colleccioId) {
+            if (confirm("Estàs segur que vols eliminar aquesta col·lecció?")) {
+                fetch(`/eliminar_colleccio/${colleccioId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("S'ha produït un error en eliminar la col·lecció");
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">La trobada</div>
+        <div class="nav-links">
+            <form action="/foro"><input type="submit" value="Foro"></form>
+            <form action="/escaner"><input type="submit" value="Escaner"></form>
+            <form action="/colleccio"><input type="submit" value="Col·lecció"></form>
+            <form action="/xat"><input type="submit" value="Xat"></form>
+        </div>
+        <div class="user-section">
+            <div class="user-icon">U</div>
+            <form action="/usuari"><input type="submit" value="Usuari"></form>
+        </div>
+    </nav>
 
-        <!-- Contenido principal -->
-        <main class="main-content">
-            <h1>Benvingut/da a La Trobada</h1>
-            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
-        </main>
-    </body>
+    <main class="main-content">
+        <h1>La teva col·lecció</h1>
+        
+        {% if error %}
+            <div class="alert error">{{ error }}</div>
+        {% endif %}
+        {% if success %}
+            <div class="alert success">{{ success }}</div>
+        {% endif %}
+        
+        <form action="/crear_colleccio" method="POST" class="crear-colleccio-form">
+            <input type="text" name="nom_colleccio" placeholder="Nom de la nova col·lecció" required>
+            <button type="submit">Crear Col·lecció</button>
+        </form>
+        
+        {% if colleccions %}
+        <div class="colleccions-container">
+            <h2>Les teves col·leccions</h2>
+            <ul class="colleccions-list">
+                {% for colleccio in colleccions %}
+                <li class="colleccio-item">
+                    <a href="/colleccio/{{ colleccio.id }}" class="colleccio-link">
+                        {{ colleccio.nom }}
+                    </a>
+                    <div class="colleccio-actions">
+                        <span class="colleccio-count">
+                            {{ colleccio.quantitat }} {{ 'cartes' if colleccio.quantitat != 1 else 'carta' }}
+                        </span>
+                        <button class="delete-btn" onclick="eliminarColleccio({{ colleccio.id }})">
+                            Eliminar
+                        </button>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p class="no-colleccions">Encara no tens cap col·lecció creada.</p>
+        {% endif %}
+    </main>
+</body>
 </html>
