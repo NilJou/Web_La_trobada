@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, jsonify, request, session
+from flask import Flask, render_template, Blueprint, jsonify, request, session, redirect, url_for
 import requests
 
 routes = Blueprint('routes', __name__)
@@ -108,6 +108,73 @@ def carta_web():
     except Exception as e:
         return render_template('escaner.html', error=f"Error inesperat: {str(e)}")
 
+@routes.route('/obtenir_colleccions')
+def obtenir_colleccions():
+    try:
+        usuari_actual = session.get("user")
+        if not usuari_actual:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+        
+        url = "http://10.100.0.78:5000/api/coleccio/mostrar"
+        headers = {'Content-Type': 'application/json'}
+        payload = {"usr": usuari_actual}
+        
+        response = requests.get(url, headers=headers, json=payload)
+        
+        if response.status_code == 200:
+            colleccions = response.json()
+            
+            if not isinstance(colleccions, list):
+                colleccions = [colleccions] if isinstance(colleccions, dict) else []
+            
+            processed_collections = []
+            for col in colleccions:
+                processed = {
+                    'id': col.get('id', 0),
+                    'nom': col.get('nombre', "Sense nom"),
+                    'quantitat': col.get('quantitat', 0)
+                }
+                processed_collections.append(processed)
+            
+            return jsonify(processed_collections)
+        else:
+            error_msg = response.json().get('error', "Error en obtenir les col·leccions")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+
+@routes.route('/afegir_carta_colleccio', methods=['POST'])
+def afegir_carta_colleccio():
+    try:
+        usuari_actual = session.get("user")
+        if not usuari_actual:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+        
+        data = request.get_json()
+        carta_id = data.get('carta_id')
+        colleccio_id = data.get('colleccio_id')
+        
+        if not carta_id or not colleccio_id:
+            return jsonify({'status': 'error', 'message': "Falten dades necessàries"}), 400
+        
+        url = "http://10.100.0.78:5000/api/carta/coleccio"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            "usr": usuari_actual,
+            "id_col": colleccio_id,
+            "id_carta": carta_id
+        }
+        
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.json)
+        if response.status_code == 200:
+            return jsonify({'status': 'success', 'message': 'Carta afegida correctament'})
+        else:
+            error_msg = response.json().get('error', "Error en afegir la carta a la col·lecció")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+
 @routes.route('/crear_colleccio', methods=['POST'])
 def crear_colleccio():
     try:
@@ -131,6 +198,31 @@ def crear_colleccio():
             return render_template('escaner.html', nom_buscat=nom_buscat, error=error_msg)
     except Exception as e:
         return render_template('escaner.html', error=f"S'ha produït un error: {str(e)}")
+
+@routes.route('/eliminar_colleccio/<int:colleccio_id>', methods=['POST'])
+def eliminar_colleccio(colleccio_id):
+    try:
+        usuari_actual = session.get("user")
+        if not usuari_actual:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+        
+        url = "http://10.100.0.78:5000/api/coleccio/eliminar"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+                    "usr": usuari_actual, 
+                    "nom_col": colleccio_id,
+                    "id": colleccio_id
+                    }
+        
+        response = requests.post(url, json=payload, headers=headers)
+        
+        if response.status_code == 201:
+            return jsonify({'status': 'success', 'message': 'Col·lecció eliminada'})
+        else:
+            error_msg = response.json().get('error', "Error en eliminar la col·lecció")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
 
 @routes.route('/colleccio')
 def colleccio():
@@ -167,29 +259,123 @@ def colleccio():
     except Exception as e:
         return render_template('colleccio.html', error=f"S'ha produït un error: {str(e)}")
 
-@routes.route('/eliminar_colleccio/<int:colleccio_id>', methods=['POST'])
-def eliminar_colleccio(colleccio_id):
+@routes.route('/colleccio/<int:colleccio_id>')
+def veure_colleccio(colleccio_id):
+    try:
+        usuari_actual = session.get("user")
+        if not usuari_actual:
+            return redirect(url_for('routes.login'))
+        
+        headers = {'Content-Type': 'application/json'}
+        
+        # 1. Obtenir informació de la col·lecció específica
+        url_col = "http://10.100.0.78:5000/api/carta/coleccio/mostrar"
+        payload_col = {
+                        "id_col": colleccio_id,
+                       }
+        
+        response_col = requests.get(url_col, headers=headers, json=payload_col)
+        print(response_col.json())
+        if response_col.status_code != 200:
+            error_msg = response_col.json().get('error', "Error en obtenir les col·leccions")
+            return render_template('colleccio_detall.html', 
+                                error=error_msg,
+                                colleccio=None,
+                                cartes=[])
+        
+        # Buscar la col·lecció específica
+        colleccions = response_col.json()
+        if not isinstance(colleccions, list):
+            colleccions = [colleccions] if isinstance(colleccions, dict) else []
+        
+        colleccio = next((col for col in colleccions if col.get('id_carta') == colleccio_id), None)
+        
+        if not colleccio:
+            return render_template('colleccio_detall.html', 
+                                error="Col·lecció no trobada",
+                                colleccio=None,
+                                cartes=[])
+        
+        # Processar dades de la col·lecció
+        colleccio_procesada = {
+            'id': colleccio.get('id'),
+            'nom': colleccio.get('nombre'),
+            'imatge': colleccio.get('imatge'),
+            'quantitat': colleccio.get('quantitat', 0)
+        }
+        
+        # 2. Obtenir les cartes de la col·lecció
+        url_cartes = "http://10.100.0.78:5000/api/carta/coleccio/cartes"
+        payload_cartes = {
+            "usr": usuari_actual,
+            "id_col": colleccio_id
+        }
+        
+        response_cartes = requests.get(url_cartes, headers=headers, json=payload_cartes)
+        
+        if response_cartes.status_code == 200:
+            cartes = response_cartes.json()
+            if not isinstance(cartes, list):
+                cartes = [cartes] if isinstance(cartes, dict) else []
+            
+            # Processar dades de les cartes
+            processed_cartes = []
+            for carta in cartes:
+                processed = {
+                    'id': carta.get('id'),
+                    'nom': carta.get('nom', "Sense nom"),
+                    'descripcio': carta.get('descripcio', ""),
+                    'raresa': carta.get('raresa', "Comú"),
+                    'imatge_url': carta.get('imatge_url'),
+                    'data_afegit': carta.get('data_afegit', "Data desconeguda")
+                }
+                processed_cartes.append(processed)
+            
+            return render_template('colleccio_detall.html', colleccio=colleccio_procesada, cartes=processed_cartes, success=request.args.get('success'))
+        else:
+            error_msg = response_cartes.json().get('error', "Error en obtenir les cartes de la col·lecció")
+            return render_template('colleccio_detall.html', 
+                                colleccio=colleccio_procesada, 
+                                error=error_msg,
+                                cartes=[])
+            
+    except requests.exceptions.RequestException as e:
+        return render_template('colleccio_detall.html', 
+                            colleccio=None,
+                            error="Error de connexió amb el servidor",
+                            cartes=[])
+    except Exception as e:
+        return render_template('colleccio_detall.html', 
+                            colleccio=None,
+                            error=f"Error inesperat: {str(e)}",
+                            cartes=[])
+
+@routes.route('/eliminar_carta_colleccio/<int:colleccio_id>/<int:carta_id>', methods=['POST'])
+def eliminar_carta_colleccio(colleccio_id, carta_id):
     try:
         usuari_actual = session.get("user")
         if not usuari_actual:
             return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
         
-        url = "http://10.100.0.78:5000/api/coleccio/eliminar"
+        url = "http://10.100.0.78:5000/api/coleccio/eliminar_carta"
         headers = {'Content-Type': 'application/json'}
         payload = {
-                    "usr": usuari_actual, 
-                    "nom_col": colleccio_id
-                    }
+            "usr": usuari_actual,
+            "id_col": colleccio_id,
+            "id_carta": carta_id
+        }
         
         response = requests.post(url, json=payload, headers=headers)
         
         if response.status_code == 200:
-            return jsonify({'status': 'success', 'message': 'Col·lecció eliminada'})
+            return jsonify({'status': 'success', 'message': 'Carta eliminada de la col·lecció'})
         else:
-            error_msg = response.json().get('error', "Error en eliminar la col·lecció")
+            error_msg = response.json().get('error', "Error en eliminar la carta de la col·lecció")
             return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({'status': 'error', 'message': "Error de connexió amb el servidor"}), 500
     except Exception as e:
-        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+        return jsonify({'status': 'error', 'message': f"Error inesperat: {str(e)}"}), 500
 
 @routes.route('/xat')
 def xat():

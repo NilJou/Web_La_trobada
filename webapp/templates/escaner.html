@@ -10,6 +10,81 @@
         <title>La trobada</title> 
         <!-- Enllaç a l'arxiu CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+        <!-- Script per gestionar les col·leccions -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Carregar col·leccions quan la pàgina estigui preparada
+                carregarColleccions();
+                
+                // Variable per guardar la col·lecció seleccionada
+                let colleccioSeleccionada = null;
+                
+                // Funció per carregar les col·leccions de l'usuari
+                function carregarColleccions() {
+                    fetch('/obtenir_colleccions')
+                        .then(response => response.json())
+                        .then(data => {
+                            const select = document.getElementById('select-colleccio-global');
+                            // Netejar opcions existents
+                            select.innerHTML = '';
+                            
+                            // Afegir opció per defecte
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'Selecciona una col·lecció';
+                            select.appendChild(defaultOption);
+                            
+                            // Afegir col·leccions
+                            data.forEach(colleccio => {
+                                const option = document.createElement('option');
+                                option.value = colleccio.id;
+                                option.textContent = colleccio.nom;
+                                select.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error carregant col·leccions:', error);
+                        });
+                }
+                
+                // Funció per seleccionar una col·lecció
+                window.seleccionarColleccio = function() {
+                    const selectElement = document.getElementById('select-colleccio-global');
+                    colleccioSeleccionada = selectElement.value;
+                };
+                
+                // Funció per afegir una carta a la col·lecció seleccionada
+                window.afegirAColleccio = function(cartaId) {
+                    if (!colleccioSeleccionada) {
+                        alert("Si us plau, seleccioneu una col·lecció primer");
+                        return;
+                    }
+
+                    fetch('/afegir_carta_colleccio', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            carta_id: cartaId,
+                            colleccio_id: colleccioSeleccionada
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert("Carta afegida correctament!");
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("S'ha produït un error");
+                    });
+                };
+            });
+        </script>
     </head>
     
     <!-- Body per al document -->
@@ -60,6 +135,13 @@
                 <div class="alert success">{{ success }}</div>
             {% endif %}
             
+            <!-- Selector de col·lecció (antes del formulario de búsqueda) -->
+            <div class="seleccio-colleccio">
+                <select id="select-colleccio-global" onchange="seleccionarColleccio()">
+                    <option value="">Carregant col·leccions...</option>
+                </select>
+            </div>
+            
             <!-- Formulari de cerca de cartes -->
             <form action="/carta/web" method="POST">
                 <!-- Camp de text per introduir el nom de la carta -->
@@ -79,7 +161,7 @@
                 <div class="cartes-container">
                     <!-- Bucle per mostrar cada carta -->
                     {% for carta in cartes %}
-                    <div class="carta">
+                    <div class="carta" data-carta-id="{{ carta.id }}">
                         <!-- Imatge de la carta, amb fallback per si no pot carregarla -->
                         <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
                              onerror="this.onerror=null;this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
@@ -90,6 +172,11 @@
                             <h3>{{ carta.nom }}</h3>
                             <!-- Expansio de la carta -->
                             <p>Expansió: {{ carta.expansio }}</p> 
+                            
+                            <!-- Botó per afegir a la col·lecció seleccionada -->
+                            <button type="button" onclick="afegirAColleccio('{{ carta.id }}')" class="btn-afegir">
+                                Afegir a col·lecció
+                            </button>
                         </div>
                     </div>
                     {% endfor %}
