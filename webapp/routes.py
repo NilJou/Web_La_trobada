@@ -149,7 +149,7 @@ def afegir_carta_colleccio():
         }
         
         response = requests.post(url, json=payload, headers=headers)
-        print(response.json)
+        
         if response.status_code == 200:
             return jsonify({'status': 'success', 'message': 'Carta afegida correctament'})
         else:
