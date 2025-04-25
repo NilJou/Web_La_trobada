@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada</title>
+        <title>Xat - La trobada</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
     </head>
     <body>
@@ -31,10 +31,75 @@
             </div>
         </nav>
 
-        <!-- Contenido principal -->
-        <main class="main-content">
-            <h1>Benvingut/da a La Trobada</h1>
-            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
-        </main>
+        <!-- Contenido principal del xat -->
+        <div class="xat-layout">
+            <!-- Lista de contactos -->
+            <div class="contact-list">
+                <div class="xat-header">
+                    <input type="text" class="xat-search" placeholder="Cercar contactes...">
+                </div>
+                <div class="contact active">
+                    <strong>Grup de la comunitat</strong>
+                    <div>Últim missatge: Hola a tothom!</div>
+                </div>
+                <div class="contact">
+                    <strong>Pere</strong>
+                    <div>Últim missatge: Tens aquesta carta?</div>
+                </div>
+                <div class="contact">
+                    <strong>Maria</strong>
+                    <div>Últim missatge> Gràcies per l'intercanvi!</div>
+                </div>
+                <div class="contact">
+                    <strong>Intercanvis actius</strong>
+                    <div>3 intercanvis en curs</div>
+                </div>
+            </div>
+            
+            <!-- Área de mensajes -->
+            <div class="xat-container">
+                <div class="xat-header">
+                    <h3>Grup de la comunitat</h3>
+                </div>
+                
+                <div class="xat-messages">
+                    <!-- Mensajes antiguos -->
+                    <div class="message received">
+                        <div class="message-info">Pere - 10:30</div>
+                        Hola a tothom! Algú té la carta de Charizard per intercanviar?
+                    </div>
+                    
+                    <div class="message received">
+                        <div class="message-info">Maria - 10:32</div>
+                        Jo la tinc, però estic buscant la de Blastoise.
+                    </div>
+                    
+                    <div class="message sent">
+                        <div class="message-info">Tu - 10:35</div>
+                        Jo tinc Blastoise! Podríem fer un intercanvi a tres?
+                    </div>
+                    
+                    <div class="message received">
+                        <div class="message-info">Pere - 10:36</div>
+                        Perfecte! Quan us va bé per quedar?
+                    </div>
+                    
+                    <div class="message received">
+                        <div class="message-info">Admin - Ahir</div>
+                        Recordeu que aquest dissabte hi ha trobada a la plaça major a les 11!
+                    </div>
+                    
+                    <div class="message received">
+                        <div class="message-info">Jordi - 3 dies</div>
+                        He afegit noves cartes a la meva col·lecció per intercanviar.
+                    </div>
+                </div>
+                
+                <div class="xat-input">
+                    <input type="text" placeholder="Escriu un missatge...">
+                    <button>Enviar</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

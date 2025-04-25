@@ -382,6 +382,67 @@ def veure_colleccio(colleccio_id):
 def xat():
     return render_template('xat.html')
 
+# Ruta para obtener mensajes del chat (simulada)
+@routes.route('/api/xat/missatges', methods=['GET'])
+def obtenir_missatges_xat():
+    try:
+        # Simulación de mensajes de chat
+        missatges = [
+            {
+                "id": 1,
+                "usuari": "Pere",
+                "contingut": "Hola a tothom! Algú té la carta de Charizard per intercanviar?",
+                "data": "10:30",
+                "enviat": False
+            },
+            {
+                "id": 2,
+                "usuari": "Maria",
+                "contingut": "Jo la tinc, però estic buscant la de Blastoise.",
+                "data": "10:32",
+                "enviat": False
+            },
+            {
+                "id": 3,
+                "usuari": "Tu",
+                "contingut": "Jo tinc Blastoise! Podríem fer un intercanvi a tres?",
+                "data": "10:35",
+                "enviat": True
+            }
+        ]
+        return jsonify(missatges)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# Ruta para obtener contactos (simulada)
+@routes.route('/api/xat/contactes', methods=['GET'])
+def obtenir_contactes():
+    try:
+        # Simulación de lista de contactos
+        contactes = [
+            {
+                "id": 1,
+                "nom": "Grup de la comunitat",
+                "ultim_missatge": "Hola a tothom!",
+                "actiu": True
+            },
+            {
+                "id": 2,
+                "nom": "Pere",
+                "ultim_missatge": "Tens aquesta carta?",
+                "actiu": False
+            },
+            {
+                "id": 3,
+                "nom": "Maria",
+                "ultim_missatge": "Gràcies per l'intercanvi!",
+                "actiu": False
+            }
+        ]
+        return jsonify(contactes)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 # Ruta per a la informació de l'usuari
 @routes.route('/usuari')
 def usuari():
