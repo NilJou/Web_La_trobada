@@ -382,42 +382,22 @@ def veure_colleccio(colleccio_id):
 def xat():
     return render_template('xat.html')
 
-# Ruta para obtener mensajes del chat (simulada)
-@routes.route('/api/xat/missatges', methods=['GET'])
-def obtenir_missatges_xat():
+@routes.route('/buscar_usuarios', methods=['GET'])
+def buscar_usuarios():
     try:
-        # Simulación de mensajes de chat
-        missatges = [
-            {
-                "id": 1,
-                "usuari": "Pere",
-                "contingut": "Hola a tothom! Algú té la carta de Charizard per intercanviar?",
-                "data": "10:30",
-                "enviat": False
-            },
-            {
-                "id": 2,
-                "usuari": "Maria",
-                "contingut": "Jo la tinc, però estic buscant la de Blastoise.",
-                "data": "10:32",
-                "enviat": False
-            },
-            {
-                "id": 3,
-                "usuari": "Tu",
-                "contingut": "Jo tinc Blastoise! Podríem fer un intercanvi a tres?",
-                "data": "10:35",
-                "enviat": True
-            }
-        ]
-        return jsonify(missatges)
+        search_term = request.args.get('q', '').lower()
+        if not search_term:
+            return jsonify([])
+        
+        url = f"http://{IP_API}/api/usuarios/buscar?q={search_term}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'status': 'error', 'message': 'Error en la búsqueda'}), response.status_code
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
-# Ruta para obtener contactos (simulada)
-@routes.route('/api/xat/contactes', methods=['GET'])
-def obtenir_contactes():
-    try:
         # Simulación de lista de contactos
         contactes = [
             {
@@ -440,6 +420,72 @@ def obtenir_contactes():
             }
         ]
         return jsonify(contactes)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@routes.route('/crear_conversacion', methods=['POST'])
+def crear_conversacion():
+    try:
+        # Obtener datos del usuario actual y el usuario seleccionado
+        usuario_actual = session.get("user")
+        if not usuario_actual:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        data = request.get_json()
+        usuario_destino = data.get('usuario_destino')
+        
+        print(usuario_destino, usuario_actual)
+        
+        if not usuario_destino:
+            return jsonify({'status': 'error', 'message': "Falta l'usuari destí"}), 400
+
+
+        
+        # Crear conversación
+        url_chat = f"http://{IP_API}/api/chat/nuevo"
+        headers = {'Content-Type': 'application/json'}
+        payload_chat = {
+            "id_usuario1": usuario_actual['id_actual'],
+            "id_usuario2": usuario_destino['id_destino']
+        }
+        
+        response_chat = requests.post(url_chat, json=payload_chat, headers=headers)
+        
+        if response_chat.status_code == 201:
+            return jsonify({
+                'status': 'success',
+                'id_conversacion': response_chat.json().get('id_conversacion'),
+                'message': 'Conversació creada'
+            })
+        elif response_chat.status_code == 409:
+            # Si ya existe, obtener el ID de la conversación existente
+            return jsonify({
+                'status': 'exists',
+                'id_conversacion': response_chat.json().get('id_conversacion'),
+                'message': 'Conversació existent'
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': response_chat.json().get('error', 'Error en crear conversació')
+            }), response_chat.status_code
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@routes.route('/obtener_conversacion/<int:id_conversacion>')
+def obtener_conversacion(id_conversacion):
+    try:
+        url = f"http://{IP_API}/api/chat/{id_conversacion}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': response.json().get('error', 'Error en obtenir conversació')
+            }), response.status_code
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
