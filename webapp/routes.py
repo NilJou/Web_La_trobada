@@ -382,6 +382,37 @@ def veure_colleccio(colleccio_id):
 def xat():
     return render_template('xat.html')
 
+@routes.route('/api/xat/contactes')
+def obtener_contactes():
+    try:
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        url = f"http://{IP_API}/api/chat/conversaciones/{session['user']}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            conversaciones = response.json()
+            
+            processed_conversations = []
+            for conv in conversaciones:
+                processed = {
+                    'id': conv['id'],
+                    'nom': conv['nombre_contacto'],
+                    'ultim_missatge': conv['ultimo_mensaje']['contenido'] if conv['ultimo_mensaje'] else '',
+                    'data': conv['ultimo_mensaje']['fecha'] if conv['ultimo_mensaje'] else '',
+                    'actiu': conv['mensajes_no_leidos'] > 0
+                }
+                processed_conversations.append(processed)
+            
+            return jsonify(processed_conversations)
+        else:
+            error_msg = response.json().get('error', "Error en obtenir les conversacions")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+            
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+
 @routes.route('/buscar_usuarios', methods=['GET'])
 def buscar_usuarios():
     try:
@@ -397,98 +428,94 @@ def buscar_usuarios():
         else:
             return jsonify({'status': 'error', 'message': 'Error en la búsqueda'}), response.status_code
     except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-        # Simulación de lista de contactos
-        contactes = [
-            {
-                "id": 1,
-                "nom": "Grup de la comunitat",
-                "ultim_missatge": "Hola a tothom!",
-                "actiu": True
-            },
-            {
-                "id": 2,
-                "nom": "Pere",
-                "ultim_missatge": "Tens aquesta carta?",
-                "actiu": False
-            },
-            {
-                "id": 3,
-                "nom": "Maria",
-                "ultim_missatge": "Gràcies per l'intercanvi!",
-                "actiu": False
-            }
-        ]
-        return jsonify(contactes)
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        return jsonify({'status': 'error', 'message': str(e)}), 500 
 
 @routes.route('/crear_conversacion', methods=['POST'])
 def crear_conversacion():
     try:
-        # Obtener datos del usuario actual y el usuario seleccionado
-        usuario_actual = session.get("user")
-        if not usuario_actual:
+        if 'user' not in session:
             return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
 
         data = request.get_json()
-        usuario_destino = data.get('usuario_destino')
-        
-        print(usuario_destino, usuario_actual)
-        
-        if not usuario_destino:
+        id_usuario2 = data.get('id_usuario2')
+                
+        if not id_usuario2:
             return jsonify({'status': 'error', 'message': "Falta l'usuari destí"}), 400
 
-
-        
-        # Crear conversación
-        url_chat = f"http://{IP_API}/api/chat/nuevo"
+        url = f"http://{IP_API}/api/chat/nuevo"
         headers = {'Content-Type': 'application/json'}
-        payload_chat = {
-            "id_usuario1": usuario_actual['id_actual'],
-            "id_usuario2": usuario_destino['id_destino']
+        payload = {
+            'id_usuario1': session['user'],
+            'id_usuario2': id_usuario2
         }
         
-        response_chat = requests.post(url_chat, json=payload_chat, headers=headers)
-        
-        if response_chat.status_code == 201:
-            return jsonify({
-                'status': 'success',
-                'id_conversacion': response_chat.json().get('id_conversacion'),
-                'message': 'Conversació creada'
-            })
-        elif response_chat.status_code == 409:
-            # Si ya existe, obtener el ID de la conversación existente
-            return jsonify({
-                'status': 'exists',
-                'id_conversacion': response_chat.json().get('id_conversacion'),
-                'message': 'Conversació existent'
-            })
+        response = requests.post(url, json=payload, headers=headers)
+        print(response)
+        if response.status_code in [200, 201]:
+            return jsonify(response.json())
         else:
-            return jsonify({
-                'status': 'error',
-                'message': response_chat.json().get('error', 'Error en crear conversació')
-            }), response_chat.status_code
-
+            error_msg = response.json().get('error', 'Error en crear conversació')
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+            
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-@routes.route('/obtener_conversacion/<int:id_conversacion>')
-def obtener_conversacion(id_conversacion):
+@routes.route('/obtener_conversacion')
+def obtener_conversacion():
     try:
-        url = f"http://{IP_API}/api/chat/{id_conversacion}"
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        url = f"http://{IP_API}/api/chat/conversacion/{session['user']}"
         response = requests.get(url)
         
         if response.status_code == 200:
-            return jsonify(response.json())
+            mensajes = response.json().get('mensajes', [])
+            
+            processed_messages = []
+            for msg in mensajes:
+                processed = {
+                    'id': msg['id'],
+                    'contingut': msg['contenido'],
+                    'data': msg['fecha'],
+                    'enviat': msg['remitente'] == session['user'],
+                    'usuario': msg['nombre_remitente']
+                }
+                processed_messages.append(processed)
+            
+            return jsonify({'messages': processed_messages})
         else:
-            return jsonify({
-                'status': 'error',
-                'message': response.json().get('error', 'Error en obtenir conversació')
-            }), response.status_code
+            error_msg = response.json().get('error', 'Error en obtenir conversació')
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@routes.route('/enviar_mensaje', methods=['POST'])
+def enviar_mensaje():
+    try:
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        data = request.get_json()
+        
+        url = f"http://{IP_API}/api/chat/mensaje"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            'usuario': session['user'],
+            'conversacion_id': data.get('id_conversacion'),
+            'contenido': data.get('mensaje')
+        }
+        
+        response = requests.post(url, json=payload, headers=headers)
+        
+        if response.status_code == 201:
+            return jsonify(response.json())
+        else:
+            error_msg = response.json().get('error', 'Error en enviar missatge')
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+            
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 # Ruta per a la informació de l'usuari
 @routes.route('/usuari')
 def usuari():
