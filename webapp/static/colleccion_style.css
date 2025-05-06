@@ -1,0 +1,141 @@
+/* Estilos específicos para colleccio.html */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-badge {
+    background-color: #6750a4;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.stats-badge span {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.crear-colleccio-form {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.crear-colleccio-form input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.crear-colleccio-form button {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.crear-colleccio-form button:hover {
+    background-color: #45a049;
+}
+
+.colleccions-container {
+    margin-top: 2rem;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.colleccions-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.colleccio-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.colleccio-item:hover {
+    background-color: #f9f9f9;
+}
+
+.colleccio-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    flex-grow: 1;
+}
+
+.colleccio-icon svg {
+    color: #6750a4;
+}
+
+.colleccio-info {
+    flex-grow: 1;
+}
+
+.colleccio-name {
+    font-weight: 500;
+    color: #333;
+    display: block;
+}
+
+.colleccio-date {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.colleccio-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.colleccio-count {
+    color: #666;
+    font-size: 0.85rem;
+    background-color: #f0f0f0;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #c62828;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.empty-image {
+    max-width: 200px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
