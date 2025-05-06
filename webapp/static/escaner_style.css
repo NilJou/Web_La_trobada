@@ -1,8 +1,9 @@
-/* Estilos específicos para escaner.html */
+/* Estils selector de col·leccions */
 .seleccio-colleccio {
     margin-bottom: 20px;
 }
 
+/* Estil desplegable per triar col·lecció */
 .seleccio-colleccio select {
     width: 100%;
     padding: 10px;
@@ -11,10 +12,12 @@
     background-color: white;
 }
 
+/* Secció resultats cartes escanejades */
 .resultats-cartes {
     margin-top: 30px;
 }
 
+/* Contenidor de les cartesc */
 .cartes-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -22,6 +25,7 @@
     margin-top: 20px;
 }
 
+/* Estil de carta individual */
 .carta {
     background: white;
     border-radius: 8px;
@@ -30,32 +34,38 @@
     transition: transform 0.3s;
 }
 
+/* Hover per les cartes */
 .carta:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
+/* Imatge de la carta */
 .carta img {
     width: 100%;
     height: 180px;
     object-fit: cover;
 }
 
+/* Contingut de la carta */
 .carta-info {
     padding: 15px;
 }
 
+/* Títol de la carta */
 .carta-info h3 {
     margin: 0 0 10px 0;
     color: #333;
 }
 
+/* Text de la carta */
 .carta-info p {
     margin: 5px 0;
     color: #666;
     font-size: 0.9rem;
 }
 
+/* Botó afegir carta col·lecció */
 .btn-afegir {
     display: block;
     width: 100%;
@@ -69,6 +79,7 @@
     transition: background-color 0.3s;
 }
 
+/* Hover del botó */
 .btn-afegir:hover {
     background-color: #8561c5;
 }

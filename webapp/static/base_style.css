@@ -1,9 +1,11 @@
+/* Reset per tots els elements */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estils generals del Body */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: #f5f5f5;
@@ -11,6 +13,7 @@ body {
     line-height: 1.6;
 }
 
+/* Barra de navegació */
 .navbar {
     background-color: #6750a4;
     color: white;
@@ -19,12 +22,13 @@ body {
     justify-content: flex-start;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: sticky;
+    position: sticky; /* Barra fixada a dalt */
     top: 0;
     z-index: 100;
     gap: 40px;
 }
 
+/* Estil del Logo */
 .logo {
     font-size: 1.5rem;
     font-weight: 600;
@@ -32,16 +36,19 @@ body {
     margin-right: 20px;
 }
 
+/* Enllaços de navegació */
 .nav-links {
     display: flex;
     gap: 15px;
     align-items: center;
 }
 
+/* Forms de navegació */
 .nav-links form {
     margin: 0;
 }
 
+/* Botons navegació */
 .nav-links input[type="submit"] {
     background-color: transparent;
     color: white;
@@ -55,6 +62,7 @@ body {
     white-space: nowrap;
 }
 
+/* Hover als botons */
 .nav-links input[type="submit"]:hover {
     background-color: white;
     color: #6750a4;
@@ -62,11 +70,13 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Clica el botó */
 .nav-links input[type="submit"]:active {
     transform: translateY(0);
     box-shadow: none;
 }
 
+/* Secció d'usuari */
 .user-section {
     display: flex;
     align-items: center;
@@ -74,6 +84,7 @@ body {
     margin-left: auto;
 }
 
+/* Icona usuari */
 .user-icon {
     background-color: #ffffff;
     color: #6750a4;
@@ -87,17 +98,20 @@ body {
     font-size: 0.9rem;
 }
 
+/* Contingut de la pàgina */
 .main-content {
     padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Títol principal */
 .main-content h1 {
     color: #6750a4;
     margin-bottom: 20px;
 }
 
+/* Estils generals per alertes */
 .alert {
     padding: 12px 15px;
     margin-bottom: 20px;
@@ -105,18 +119,21 @@ body {
     font-size: 0.95rem;
 }
 
+/* Alerta d'error */
 .error {
     background-color: #ffebee;
     color: #c62828;
     border-left: 4px solid #c62828;
 }
 
+/* Alerta d'exit */
 .success {
     background-color: #e8f5e9;
     color: #2e7d32;
     border-left: 4px solid #2e7d32;
 }
 
+/* Botons amb icona */
 .btn-icon {
     background: none;
     border: none;
@@ -131,6 +148,7 @@ body {
     transition: background-color 0.2s;
 }
 
+/* Efecte hover pels botons amb icona */
 .btn-icon:hover {
     background-color: #f0f0f0;
 }
