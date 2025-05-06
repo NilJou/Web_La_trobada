@@ -329,43 +329,71 @@
         }
 
         // Load messages for a conversation
-        async function loadMessages(conversationId) {
-            try {
-                const messagesContainer = document.getElementById('messagesContainer');
-                messagesContainer.innerHTML = '<div class="loading-messages"><div class="loading-spinner"></div><p>Carregant missatges...</p></div>';
-                
-                const response = await fetch(`/obtener_conversacion/${conversationId}`);
-                const data = await response.json();
-                
-                if (response.status !== 200) {
-                    throw new Error(data.message || 'Error en carregar missatges');
-                }
-                
-                messagesContainer.innerHTML = '';
-                
-                if (data.messages && data.messages.length > 0) {
-                    data.messages.forEach(msg => {
-                        const messageElement = document.createElement('div');
-                        messageElement.className = `message ${msg.enviat ? 'sent' : 'received'}`;
-                        messageElement.innerHTML = `
-                            ${msg.enviat ? '' : `<strong>${msg.usuario}</strong>`}
-                            <div class="message-text">${msg.contingut}</div>
-                            <div class="message-time">${formatTime(msg.data)}</div>
-                        `;
-                        messagesContainer.appendChild(messageElement);
-                    });
-                    
-                    // Scroll to bottom
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                } else {
-                    messagesContainer.innerHTML = '<div class="no-messages">No hi ha missatges en aquesta conversa</div>';
-                }
-            } catch (error) {
-                console.error('Error loading messages:', error);
-                messagesContainer.innerHTML = 
-                    `<div class="no-messages">${error.message || 'Error en carregar missatges'}</div>`;
+     // Load messages for a conversation using recipient's username
+     async function loadMessages() {
+        try {
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = '<div class="loading-messages"><div class="loading-spinner"></div><p>Carregant missatges...</p></div>';
+    
+            if (!currentRecipient) {
+                throw new Error('No s\'ha trobat el destinatari');
             }
+    
+            const response = await fetch(`/obtener_conversacion/${encodeURIComponent(currentRecipient)}`);
+            const data = await response.json();
+    
+            if (response.status !== 200) {
+                throw new Error(data.message || 'Error en carregar missatges');
+            }
+            const currentUserId = data.currentUserId;
+            console.log('Current User ID:', currentUserId); // Debugging line
+            messagesContainer.innerHTML = '';
+    
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    const messageElement = document.createElement('div');
+                    const isSentByCurrentUser = msg.id_remitente == currentUserId;  // Compara el id_remitente con el usuario actual
+    
+                    messageElement.className = `message ${isSentByCurrentUser ? 'sent' : 'received'}`;
+    
+                    messageElement.innerHTML = `
+                        ${isSentByCurrentUser ? '' : `<strong>${msg.nombre_remitente}</strong>`}
+                        <div class="message-text">${msg.mensaje}</div>
+                        <div class="message-time">${formatTime(msg.fecha_envio)}</div>
+                    `;
+    
+                    messagesContainer.appendChild(messageElement);
+                });
+    
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            } else {
+                messagesContainer.innerHTML = '<div class="no-messages">No hi ha missatges en aquesta conversa</div>';
+            }
+        } catch (error) {
+            console.error('Error loading messages:', error);
+            messagesContainer.innerHTML =
+                `<div class="no-messages">${error.message || 'Error en carregar missatges'}</div>`;
         }
+    }
+    
+    
+    
+    // Función para formatear la fecha de los mensajes (por ejemplo: "10:30 AM" o "10:30")
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        
+        const formattedHours = hours % 12 || 12;  // Convertir a formato 12 horas
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        
+        return `${formattedHours}:${formattedMinutes} ${ampm}`;
+    }
+    
+    
+
 
         // Send a message
         async function sendMessage() {

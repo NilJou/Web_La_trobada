@@ -350,8 +350,7 @@ def veure_colleccio(colleccio_id):
 # Ruta per al xat
 @routes.route('/xat')
 def xat():
-    xats = obtener_contactes()
-    return render_template('xat.html', xats=xats)
+    return render_template('xat.html')
 
 @routes.route('/api/xat/contactes')
 def obtener_contactes():
@@ -364,7 +363,6 @@ def obtener_contactes():
 
         if response.status_code == 200:
             conversaciones = response.json()
-            print(conversaciones)
             processed_conversations = []
             for conv in conversaciones:
                 processed = {
@@ -427,35 +425,37 @@ def crear_conversacion():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-@routes.route('/obtener_conversacion')
-def obtener_conversacion():
+@routes.route('/obtener_conversacion/<string:conversacion_id>', methods=['GET'])
+def obtener_conversacion(conversacion_id):
     try:
         if 'user' not in session:
             return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
-
-        url = f"http://{IP_API}/api/chat/conversacion/{session['user']}"
+        # Obtener el nombre del usuario si se envía
+        user = session['user']
+        url = f"http://{IP_API}/api/chat/mensajes/{conversacion_id}/{user}"
         response = requests.get(url)
-        
+
         if response.status_code == 200:
-            mensajes = response.json().get('mensajes', [])
-            
+            mensajes = response.json()
             processed_messages = []
             for msg in mensajes:
                 processed = {
-                    'id': msg['id'],
-                    'contingut': msg['contenido'],
-                    'data': msg['fecha'],
-                    'enviat': msg['remitente'] == session['user'],
-                    'usuario': msg['nombre_remitente']
+                    'id_remitente': msg['id_remitente'],
+                    'mensaje': msg['mensaje'],
+                    'fecha_envio': msg['fecha_envio']
                 }
                 processed_messages.append(processed)
-            
-            return jsonify({'messages': processed_messages})
+            id = get_user_id(user)
+            return jsonify({'messages': processed_messages, 'currentUserId': id})
         else:
             error_msg = response.json().get('error', 'Error en obtenir conversació')
             return jsonify({'status': 'error', 'message': error_msg}), response.status_code
     except Exception as e:
+        print(f"Error: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+
 
 @routes.route('/enviar_mensaje', methods=['POST'])
 def enviar_mensaje():
@@ -487,3 +487,17 @@ def enviar_mensaje():
 @routes.route('/usuari')
 def usuari():
     return render_template('usuari.html')
+
+def get_user_id(user):
+    try:
+        url = f"http://{IP_API}/api/usuario/id/{user}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            id = response.json().get('id')
+            return id
+        else:
+            return None
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
