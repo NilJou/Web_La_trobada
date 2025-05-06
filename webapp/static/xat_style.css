@@ -1,8 +1,8 @@
 /* Estilos específicos para xat.html */
 .chat-main-container {
     display: flex;
-    height: calc(100vh - 60px);
-    margin-top: 60px;
+    height: calc(100vh - 80px);
+    margin-top: 20px;
 }
 
 .chat-sidebar {

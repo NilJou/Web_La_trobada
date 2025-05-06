@@ -1,0 +1,121 @@
+/* ajustos_usuari.css - Estils per a la pàgina d'ajustos de l'usuari */
+
+.contenidor-ajustos {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.capcalera-ajustos {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.nom-usuari {
+    font-size: 2rem;
+    color: #6750a4;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.subtitol-ajustos {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.seccio-ajustos {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.seccio-ajustos:last-child {
+    border-bottom: none;
+}
+
+.titol-seccio {
+    font-size: 1.3rem;
+    color: #6750a4;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.icona-seccio {
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+.opcio-ajust {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.opcio-ajust:hover {
+    background-color: #f0ebfa;
+    transform: translateX(5px);
+}
+
+.text-opcio {
+    flex-grow: 1;
+}
+
+.titol-opcio {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.descripcio-opcio {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.boto-opcio {
+    background-color: #6750a4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    margin-left: 15px;
+}
+
+.boto-opcio:hover {
+    background-color: #5a4490;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estils per a dispositius mòbils */
+@media (max-width: 768px) {
+    .contenidor-ajustos {
+        padding: 20px;
+    }
+    
+    .nom-usuari {
+        font-size: 1.5rem;
+    }
+    
+    .opcio-ajust {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .boto-opcio {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+}

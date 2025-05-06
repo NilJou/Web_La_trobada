@@ -1,40 +1,106 @@
 <!DOCTYPE html>
 <html lang="ca">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-    </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">La trobada</div>
-            <div class="nav-links">
-                    <form action="/foro">
-                        <input type="submit" value="Foro">
-                    </form>
-                    <form action="/escaner">
-                        <input type="submit" value="Escaner">
-                    </form>
-                    <form action="/colleccio">
-                        <input type="submit" value="Col·lecció">
-                    </form>
-                    <form action="/xat">
-                        <input type="submit" value="Xat">
-                    </form>
-            </div>
-            <div class="user-section">
-                <div class="user-icon">U</div>
-                <form action="/usuari">
-                    <input type="submit" value="Usuari">
-                </form>
-            </div>
-        </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustos de l'usuari - La trobada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='usuari_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">La trobada</div>
+        <div class="nav-links">
+            <form action="/foro">
+                <input type="submit" value="Fòrum">
+            </form>
+            <form action="/escaner">
+                <input type="submit" value="Escàner">
+            </form>
+            <form action="/colleccio">
+                <input type="submit" value="Col·lecció">
+            </form>
+            <form action="/xat">
+                <input type="submit" value="Xat">
+            </form>
+        </div>
+        <div class="user-section">
+            <div class="user-icon">U</div>
+            <form action="/usuari">
+                <input type="submit" value="Usuari">
+            </form>
+        </div>
+    </nav>
 
-        <!-- Contenido principal -->
-        <main class="main-content">
-            <h1>Benvingut/da a La Trobada</h1>
-            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
-        </main>
-    </body>
+    <main class="main-content">
+        <div class="contenidor-ajustos">
+            <div class="capcalera-ajustos">
+                <div class="nom-usuari">Anna García</div>
+                <div class="subtitol-ajustos">Gestiona els teus ajustos i preferències</div>
+            </div>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-user-shield"></i>
+                    Privadesa i seguretat
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Configuració de privadesa</div>
+                        <div class="descripcio-opcio">Controla qui pot veure el teu perfil i activitat</div>
+                    </div>
+                    <button class="boto-opcio">Configurar</button>
+                </div>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Contrasenya i accés</div>
+                        <div class="descripcio-opcio">Canvia la teva contrasenya i mètodes d'accés</div>
+                    </div>
+                    <button class="boto-opcio">Modificar</button>
+                </div>
+            </div>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-headset"></i>
+                    Suport i ajuda
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Contacta amb nosaltres</div>
+                        <div class="descripcio-opcio">Tens algun problema o suggerència?</div>
+                    </div>
+                    <button class="boto-opcio">Contactar</button>
+                </div>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Preguntes freqüents</div>
+                        <div class="descripcio-opcio">Troba respostes a les teves preguntes</div>
+                    </div>
+                    <button class="boto-opcio">Veure FAQ</button>
+                </div>
+            </div>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-globe"></i>
+                    Idioma
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Idioma de l'aplicació</div>
+                        <div class="descripcio-opcio">Selecciona l'idioma que prefereixes</div>
+                    </div>
+                    <button class="boto-opcio">Canviar idioma</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
 </html>
