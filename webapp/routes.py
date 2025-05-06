@@ -193,36 +193,6 @@ def obtenir_colleccions():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
 
-    try:
-        usuari_actual = session.get("user")
-        if not usuari_actual:
-            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
-        
-        data = request.get_json()
-        carta_id = data.get('carta_id')
-        colleccio_id = data.get('colleccio_id')
-        
-        if not carta_id or not colleccio_id:
-            return jsonify({'status': 'error', 'message': "Falten dades necessàries"}), 400
-        
-        url = "http://10.100.0.78:5000/api/carta/coleccio"
-        headers = {'Content-Type': 'application/json'}
-        payload = {
-            "usr": usuari_actual,
-            "id_col": colleccio_id,
-            "id_carta": carta_id
-        }
-        
-        response = requests.post(url, json=payload, headers=headers)
-        print(response.json)
-        if response.status_code == 200:
-            return jsonify({'status': 'success', 'message': 'Carta afegida correctament'})
-        else:
-            error_msg = response.json().get('error', "Error en afegir la carta a la col·lecció")
-            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
-
 # Ruta per mostrar les col·leccions
 @routes.route('/colleccio')
 def colleccio():
@@ -380,7 +350,8 @@ def veure_colleccio(colleccio_id):
 # Ruta per al xat
 @routes.route('/xat')
 def xat():
-    return render_template('xat.html')
+    xats = obtener_contactes()
+    return render_template('xat.html', xats=xats)
 
 @routes.route('/api/xat/contactes')
 def obtener_contactes():
@@ -390,28 +361,24 @@ def obtener_contactes():
 
         url = f"http://{IP_API}/api/chat/conversaciones/{session['user']}"
         response = requests.get(url)
-        
+
         if response.status_code == 200:
             conversaciones = response.json()
-            
+            print(conversaciones)
             processed_conversations = []
             for conv in conversaciones:
                 processed = {
-                    'id': conv['id'],
-                    'nom': conv['nombre_contacto'],
-                    'ultim_missatge': conv['ultimo_mensaje']['contenido'] if conv['ultimo_mensaje'] else '',
-                    'data': conv['ultimo_mensaje']['fecha'] if conv['ultimo_mensaje'] else '',
-                    'actiu': conv['mensajes_no_leidos'] > 0
+                    'nom': conv['nombre_contacto']
                 }
                 processed_conversations.append(processed)
             
-            return jsonify(processed_conversations)
+            return processed_conversations
         else:
             error_msg = response.json().get('error', "Error en obtenir les conversacions")
             return jsonify({'status': 'error', 'message': error_msg}), response.status_code
             
     except Exception as e:
-        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+        print(f"Error: {str(e)}")
 
 @routes.route('/buscar_usuarios', methods=['GET'])
 def buscar_usuarios():
