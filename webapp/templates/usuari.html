@@ -8,99 +8,192 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='usuari_style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="logo">La trobada</div>
-        <div class="nav-links">
-            <form action="/foro">
-                <input type="submit" value="Fòrum">
-            </form>
-            <form action="/escaner">
-                <input type="submit" value="Escàner">
-            </form>
-            <form action="/colleccio">
-                <input type="submit" value="Col·lecció">
-            </form>
-            <form action="/xat">
-                <input type="submit" value="Xat">
-            </form>
-        </div>
-        <div class="user-section">
-            <div class="user-icon">U</div>
-            <form action="/usuari">
-                <input type="submit" value="Usuari">
-            </form>
-        </div>
-    </nav>
+    <body>
+        <nav class="navbar">
+            <div class="logo">La trobada</div>
+            <div class="nav-links">
+                <form action="/foro">
+                    <input type="submit" value="Fòrum">
+                </form>
+                <form action="/escaner">
+                    <input type="submit" value="Escàner">
+                </form>
+                <form action="/colleccio">
+                    <input type="submit" value="Col·lecció">
+                </form>
+                <form action="/xat">
+                    <input type="submit" value="Xat">
+                </form>
+            </div>
+            <div class="user-section">
+                <div class="user-icon">{{ username[0]|upper }}</div>
+                <form action="/usuari">
+                    <input type="submit" value="Usuari">
+                </form>
+            </div>
+        </nav>
 
-    <main class="main-content">
-        <div class="contenidor-ajustos">
-            <div class="capcalera-ajustos">
-                <div class="nom-usuari">Anna García</div>
-                <div class="subtitol-ajustos">Gestiona els teus ajustos i preferències</div>
+        <main class="main-content">
+            <div class="contenidor-ajustos">
+                <div class="capcalera-ajustos">
+                    <div class="nom-usuari">{{ username }}</div>
+                    <div class="subtitol-ajustos">Gestiona els teus ajustos i preferències</div>
+                </div>
+                
+                <div class="seccio-ajustos">
+                    <h2 class="titol-seccio">
+                        <i class="icona-seccio fas fa-user-shield"></i>
+                        Privacitat i seguretat
+                    </h2>
+                    
+                    <div class="opcio-ajust">
+                        <div class="text-opcio">
+                            <div class="titol-opcio">Canvi de nom</div>
+                            <div class="descripcio-opcio">Modifica el teu nom d'usuari</div>
+                        </div>
+                        <button class="boto-opcio">Canviar</button>
+                    </div>
+                    
+                    <div class="opcio-ajust">
+                        <div class="text-opcio">
+                            <div class="titol-opcio">Contrasenya i accés</div>
+                            <div class="descripcio-opcio">Canvia la teva contrasenya i mètodes d'accés</div>
+                        </div>
+                        <button class="boto-opcio" onclick="mostrarModalCanviContrasenya()">Modificar</button>
+                    </div>
+                </div>
+                
+                <div class="seccio-ajustos">
+                    <h2 class="titol-seccio">
+                        <i class="icona-seccio fas fa-headset"></i>
+                        Suport i ajuda
+                    </h2>
+                    
+                    <div class="opcio-ajust">
+                        <div class="text-opcio">
+                            <div class="titol-opcio">Contacta amb nosaltres</div>
+                            <div class="descripcio-opcio">Tens algun problema o suggerència?</div>
+                        </div>
+                        <button class="boto-opcio">Contactar</button>
+                    </div>
+                    
+                    <div class="opcio-ajust">
+                        <div class="text-opcio">
+                            <div class="titol-opcio">Preguntes freqüents</div>
+                            <div class="descripcio-opcio">Troba respostes a les teves preguntes</div>
+                        </div>
+                        <button class="boto-opcio">Veure FAQ</button>
+                    </div>
+                </div>
+                
+                <div class="seccio-ajustos">
+                    <h2 class="titol-seccio">
+                        <i class="icona-seccio fas fa-globe"></i>
+                        Idioma
+                    </h2>
+                    
+                    <div class="opcio-ajust">
+                        <div class="text-opcio">
+                            <div class="titol-opcio">Idioma de l'aplicació</div>
+                            <div class="descripcio-opcio">Selecciona l'idioma que prefereixes</div>
+                        </div>
+                        <button class="boto-opcio">Canviar idioma</button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="seccio-ajustos">
-                <h2 class="titol-seccio">
-                    <i class="icona-seccio fas fa-user-shield"></i>
-                    Privadesa i seguretat
-                </h2>
-                
-                <div class="opcio-ajust">
-                    <div class="text-opcio">
-                        <div class="titol-opcio">Configuració de privadesa</div>
-                        <div class="descripcio-opcio">Controla qui pot veure el teu perfil i activitat</div>
-                    </div>
-                    <button class="boto-opcio">Configurar</button>
-                </div>
-                
-                <div class="opcio-ajust">
-                    <div class="text-opcio">
-                        <div class="titol-opcio">Contrasenya i accés</div>
-                        <div class="descripcio-opcio">Canvia la teva contrasenya i mètodes d'accés</div>
-                    </div>
-                    <button class="boto-opcio">Modificar</button>
-                </div>
+        </main>
+
+        <!-- Modal per al canvi de contrasenya -->
+        <div id="modalCanviContrasenya" class="cookie-popup">
+            <div class="cookie-header">
+                <h3>Canviar contrasenya</h3>
+                <button class="close-btn" onclick="amagarModalCanviContrasenya()">&times;</button>
             </div>
-            
-            <div class="seccio-ajustos">
-                <h2 class="titol-seccio">
-                    <i class="icona-seccio fas fa-headset"></i>
-                    Suport i ajuda
-                </h2>
-                
-                <div class="opcio-ajust">
-                    <div class="text-opcio">
-                        <div class="titol-opcio">Contacta amb nosaltres</div>
-                        <div class="descripcio-opcio">Tens algun problema o suggerència?</div>
+            <div class="cookie-content">
+                <form id="formCanviContrasenya" onsubmit="enviarCanviContrasenya(event)">
+                    <div class="cookie-option">
+                        <label for="contrasenya_actual">Contrasenya actual:</label>
+                        <input type="password" id="contrasenya_actual" name="contrasenya_actual" required>
                     </div>
-                    <button class="boto-opcio">Contactar</button>
-                </div>
-                
-                <div class="opcio-ajust">
-                    <div class="text-opcio">
-                        <div class="titol-opcio">Preguntes freqüents</div>
-                        <div class="descripcio-opcio">Troba respostes a les teves preguntes</div>
+                    <div class="cookie-option">
+                        <label for="nova_contrasenya">Nova contrasenya:</label>
+                        <input type="password" id="nova_contrasenya" name="nova_contrasenya" required>
                     </div>
-                    <button class="boto-opcio">Veure FAQ</button>
-                </div>
-            </div>
-            
-            <div class="seccio-ajustos">
-                <h2 class="titol-seccio">
-                    <i class="icona-seccio fas fa-globe"></i>
-                    Idioma
-                </h2>
-                
-                <div class="opcio-ajust">
-                    <div class="text-opcio">
-                        <div class="titol-opcio">Idioma de l'aplicació</div>
-                        <div class="descripcio-opcio">Selecciona l'idioma que prefereixes</div>
+                    <div class="cookie-option">
+                        <label for="confirmar_contrasenya">Confirmar nova contrasenya:</label>
+                        <input type="password" id="confirmar_contrasenya" name="confirmar_contrasenya" required>
                     </div>
-                    <button class="boto-opcio">Canviar idioma</button>
-                </div>
+                    <div class="cookie-buttons">
+                        <button type="button" class="boto-opcio" onclick="amagarModalCanviContrasenya()">Cancel·lar</button>
+                        <button type="submit" class="boto-opcio">Canviar contrasenya</button>
+                    </div>
+                </form>
+                <div id="missatgeError" style="color: red; margin-top: 10px; display: none;"></div>
             </div>
         </div>
-    </main>
-</body>
+        <div id="overlayCanviContrasenya" class="popup-overlay"></div>
+
+        <script>
+            function mostrarModalCanviContrasenya() {
+                document.getElementById('modalCanviContrasenya').classList.add('active');
+                document.getElementById('overlayCanviContrasenya').classList.add('active');
+            }
+
+            function amagarModalCanviContrasenya() {
+                document.getElementById('modalCanviContrasenya').classList.remove('active');
+                document.getElementById('overlayCanviContrasenya').classList.remove('active');
+                document.getElementById('missatgeError').style.display = 'none';
+                document.getElementById('formCanviContrasenya').reset();
+            }
+
+            function enviarCanviContrasenya(event) {
+                event.preventDefault();
+                
+                const contrasenyaActual = document.getElementById('contrasenya_actual').value;
+                const novaContrasenya = document.getElementById('nova_contrasenya').value;
+                const confirmarContrasenya = document.getElementById('confirmar_contrasenya').value;
+                
+                const missatgeError = document.getElementById('missatgeError');
+                
+                // Validació bàsica
+                if (novaContrasenya !== confirmarContrasenya) {
+                    missatgeError.textContent = "Les contrasenyes noves no coincideixen";
+                    missatgeError.style.display = 'block';
+                    return;
+                }
+                
+                if (novaContrasenya.length < 6) {
+                    missatgeError.textContent = "La contrasenya ha de tenir almenys 6 caràcters";
+                    missatgeError.style.display = 'block';
+                    return;
+                }
+                
+                // Enviar dades al servidor
+                fetch('/canviar_contrasenya', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contrasenya_actual: contrasenyaActual,
+                        nova_contrasenya: novaContrasenya
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Contrasenya canviada correctament');
+                        amagarModalCanviContrasenya();
+                    } else {
+                        missatgeError.textContent = data.message || "Error en canviar la contrasenya";
+                        missatgeError.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    missatgeError.textContent = "Error de connexió amb el servidor";
+                    missatgeError.style.display = 'block';
+                });
+            }
+        </script>
+    </body>
 </html>

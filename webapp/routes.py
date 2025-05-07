@@ -8,6 +8,20 @@ IP_API = "10.100.3.25:5000"
 # Creació d'un Blueprint
 routes = Blueprint('routes', __name__)
 
+def get_user_id(user):
+    try:
+        url = f"http://{IP_API}/api/usuario/id/{user}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            id = response.json().get('id')
+            return id
+        else:
+            return None
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+
 # Ruta principal
 @routes.route('/')
 def home():
@@ -454,8 +468,6 @@ def obtener_conversacion(conversacion_id):
         print(f"Error: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-
-
 @routes.route('/usuario_actual')
 def usuario_actual():
     id = get_user_id(session['user'])
@@ -463,8 +475,6 @@ def usuario_actual():
             'id_usuario': id
             # si también lo guardaste
         })
-    
-        
 
 @routes.route('/enviar_mensaje', methods=['POST'])
 def enviar_mensaje():
@@ -492,21 +502,47 @@ def enviar_mensaje():
             
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 # Ruta per a la informació de l'usuari
 @routes.route('/usuari')
 def usuari():
-    return render_template('usuari.html')
+    if 'user' not in session:
+        return redirect(url_for('routes.login'))
+    return render_template('usuari.html', username=session['user'])
 
-def get_user_id(user):
+# Ruta per canviar contrasenya
+@routes.route('/canviar_contrasenya', methods=['POST'])
+def canviar_contrasenya():
     try:
-        url = f"http://{IP_API}/api/usuario/id/{user}"
-        response = requests.get(url)
-        
+        # Verificar si el usuario ha iniciado sesión
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        # Obtener datos del formulario
+        data = request.get_json()
+        contrasenya_actual = data.get('contrasenya_actual')
+        nova_contrasenya = data.get('nova_contrasenya')
+
+        if not all([contrasenya_actual, nova_contrasenya]):
+            return jsonify({'status': 'error', 'message': "Falten dades necessàries"}), 400
+
+        # Enviar solicitud a la API para cambiar la contraseña
+        url = f"http://{IP_API}/api/informacion/contrasenya"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            "usuari": session['user'],
+            "contrasenya": contrasenya_actual,
+            "nova_contrasenya": nova_contrasenya
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+
+        # Procesar la respuesta
         if response.status_code == 200:
-            id = response.json().get('id')
-            return id
+            return jsonify({'status': 'success', 'message': 'Contrasenya canviada correctament'})
         else:
-            return None
+            error_msg = response.json().get('error', "Error en canviar la contrasenya")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+
     except Exception as e:
-        print(f"Error: {str(e)}")
-        return None
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
