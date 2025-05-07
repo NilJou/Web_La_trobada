@@ -1,4 +1,4 @@
-/* Estilos específicos para colleccio.html */
+/* Contenidor de col·leccions */
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -6,6 +6,7 @@
     margin-bottom: 20px;
 }
 
+/* Estil de la insígnia d'estadístiques */
 .stats-badge {
     background-color: #6750a4;
     color: white;
@@ -14,11 +15,13 @@
     font-size: 0.9rem;
 }
 
+/* Text destacat dins la insígnia */
 .stats-badge span {
     font-weight: bold;
     font-size: 1.1rem;
 }
 
+/* Formulari per crear nova col·lecció */
 .crear-colleccio-form {
     margin: 20px 0;
     padding: 15px;
@@ -29,6 +32,7 @@
     align-items: center;
 }
 
+/* Camp del formulari */
 .crear-colleccio-form input[type="text"] {
     flex-grow: 1;
     padding: 8px;
@@ -36,6 +40,7 @@
     border-radius: 4px;
 }
 
+/* Botó del formulari */
 .crear-colleccio-form button {
     padding: 8px 15px;
     background-color: #4CAF50;
@@ -46,10 +51,12 @@
     transition: background-color 0.3s;
 }
 
+/* Hover del botó */
 .crear-colleccio-form button:hover {
     background-color: #45a049;
 }
 
+/* Contenidor col·leccions */
 .colleccions-container {
     margin-top: 2rem;
     background-color: white;
@@ -58,12 +65,14 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Llista de col·leccions */
 .colleccions-list {
     list-style: none;
     padding: 0;
     margin-top: 15px;
 }
 
+/* Element individual de la col·lecció */
 .colleccio-item {
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
@@ -73,10 +82,12 @@
     transition: background-color 0.3s;
 }
 
+/* Hover pels elements de la col·lecció */
 .colleccio-item:hover {
     background-color: #f9f9f9;
 }
 
+/* Enllaç de la col·lecció */
 .colleccio-link {
     display: flex;
     align-items: center;
@@ -86,31 +97,37 @@
     flex-grow: 1;
 }
 
+/* Icona de la col·lecció */
 .colleccio-icon svg {
     color: #6750a4;
 }
 
+/* Informació de la col·lecció */
 .colleccio-info {
     flex-grow: 1;
 }
 
+/* Nom de la col·lecció */
 .colleccio-name {
     font-weight: 500;
     color: #333;
     display: block;
 }
 
+/* Data de creació de la col·lecció */
 .colleccio-date {
     font-size: 0.8rem;
     color: #666;
 }
 
+/* Contenidor d'accions de la col·lecció */
 .colleccio-actions {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
+/* Comptador d'elements a la col·lecció */
 .colleccio-count {
     color: #666;
     font-size: 0.85rem;
@@ -119,6 +136,7 @@
     border-radius: 12px;
 }
 
+/* Botó d'eliminar col·lecció */
 .delete-btn {
     background: none;
     border: none;
@@ -126,6 +144,7 @@
     color: #c62828;
 }
 
+/* Estat per quan no hi ha col·leccions */
 .empty-state {
     text-align: center;
     padding: 40px 20px;
@@ -134,6 +153,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Imatge per estat buit */
 .empty-image {
     max-width: 200px;
     margin-bottom: 20px;

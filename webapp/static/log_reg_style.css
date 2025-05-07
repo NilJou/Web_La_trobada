@@ -1,4 +1,4 @@
-/* Estilos para login.html y register.html */
+/* Estil general */
 body {
     display: flex;
     justify-content: center;
@@ -8,6 +8,7 @@ body {
     margin: 0;
 }
 
+/* Estil del formulari */
 form {
     background: white;
     padding: 30px;
@@ -18,12 +19,14 @@ form {
     margin: 20px;
 }
 
+/* Títol formulari */
 h1 {
     color: #6750a4;
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Estils pels camps d'entrada */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -35,6 +38,7 @@ input[type="password"] {
     font-size: 1rem;
 }
 
+/* Estil botó d'enviament */
 button[type="submit"] {
     width: 100%;
     padding: 12px;
@@ -47,24 +51,29 @@ button[type="submit"] {
     transition: background-color 0.3s;
 }
 
+/* Hover del botó */
 button[type="submit"]:hover {
     background-color: #8561c5;
 }
 
+/* Text del formulari */
 p {
     text-align: center;
     margin-top: 20px;
 }
 
+/* Enllaços del formulari */
 a {
     color: #6750a4;
     text-decoration: none;
 }
 
+/* Hover dels enllaços */
 a:hover {
     text-decoration: underline;
 }
 
+/* Contenidor d'errors */
 #errores {
     display: block;
     margin-bottom: 15px;

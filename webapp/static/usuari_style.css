@@ -1,5 +1,4 @@
-/* ajustos_usuari.css - Estils per a la pàgina d'ajustos de l'usuari */
-
+/* Contenidor principal */
 .contenidor-ajustos {
     max-width: 800px;
     margin: 0 auto;
@@ -9,11 +8,13 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Capçalera dels ajustos */
 .capcalera-ajustos {
     text-align: center;
     margin-bottom: 40px;
 }
 
+/* Nom de l'usuari destacat */
 .nom-usuari {
     font-size: 2rem;
     color: #6750a4;
@@ -21,21 +22,25 @@
     font-weight: 600;
 }
 
+/* Subtítol descriptiu */
 .subtitol-ajustos {
     color: #666;
     font-size: 1.1rem;
 }
 
+/* Secció individual d'ajustos */
 .seccio-ajustos {
     margin-bottom: 30px;
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
 }
 
+/* Última secció sense línia separadora */
 .seccio-ajustos:last-child {
     border-bottom: none;
 }
 
+/* Títol de la secció */
 .titol-seccio {
     font-size: 1.3rem;
     color: #6750a4;
@@ -44,11 +49,13 @@
     align-items: center;
 }
 
+/* Icona del títol de secció */
 .icona-seccio {
     margin-right: 10px;
     font-size: 1.5rem;
 }
 
+/* Opció individual d'ajust */
 .opcio-ajust {
     display: flex;
     justify-content: space-between;
@@ -60,26 +67,31 @@
     transition: all 0.3s ease;
 }
 
+/* Efecte hover per les opcions */
 .opcio-ajust:hover {
     background-color: #f0ebfa;
     transform: translateX(5px);
 }
 
+/* Text de l'opció */
 .text-opcio {
     flex-grow: 1;
 }
 
+/* Títol de l'opció */
 .titol-opcio {
     font-weight: 500;
     color: #333;
     margin-bottom: 5px;
 }
 
+/* Descripció de l'opció */
 .descripcio-opcio {
     font-size: 0.9rem;
     color: #666;
 }
 
+/* Botó d'acció de l'opció */
 .boto-opcio {
     background-color: #6750a4;
     color: white;
@@ -92,13 +104,14 @@
     margin-left: 15px;
 }
 
+/* Efecte hover del botó */
 .boto-opcio:hover {
     background-color: #5a4490;
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estils per a dispositius mòbils */
+/* Estils responsius per a dispositius mòbils */
 @media (max-width: 768px) {
     .contenidor-ajustos {
         padding: 20px;
@@ -108,11 +121,13 @@
         font-size: 1.5rem;
     }
     
+    /* Canvi a disposició vertical en opcions */
     .opcio-ajust {
         flex-direction: column;
         align-items: flex-start;
     }
     
+    /* Ajustos del botó en mòbil */
     .boto-opcio {
         margin-left: 0;
         margin-top: 10px;
