@@ -85,8 +85,8 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
         const socket = io(`http://192.168.1.134:5000`, {
-            transports: ['websocket'],  // asegúrate que usa websocket
-            withCredentials: true       // importante si usas sesiones en Flask
+            transports: ['websocket'],
+            withCredentials: true
         });
         socket.on('nuevo_mensaje', (data) => {
             console.log('Nuevo mensaje recibido:', data.mensaje);

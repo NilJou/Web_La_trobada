@@ -1,12 +1,15 @@
-/* Estilos específicos para xat.html */
+/* Estils específics per a xat.html */
+
+/* Contenidor principal del xat - Flexbox per a disposició horitzontal */
 .chat-main-container {
     display: flex;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 80px); /* Altura completa menys l'espai del header */
     margin-top: 20px;
 }
 
+/* Barra lateral del xat */
 .chat-sidebar {
-    width: 350px;
+    width: 350px; /* Amplada fixa */
     background-color: white;
     border-right: 1px solid #e1e1e1;
     display: flex;
@@ -14,16 +17,19 @@
     height: 100%;
 }
 
+/* Contenidor de cerca */
 .search-container {
     padding: 15px;
     border-bottom: 1px solid #e1e1e1;
 }
 
+/* Caixa de cerca */
 .search-box {
     display: flex;
     margin-bottom: 10px;
 }
 
+/* Camp d'entrada de cerca */
 #userSearch {
     flex: 1;
     padding: 10px 15px;
@@ -33,6 +39,7 @@
     outline: none;
 }
 
+/* Botó de cerca */
 .search-button {
     background-color: #3498db;
     color: white;
@@ -44,10 +51,12 @@
     transition: background-color 0.2s;
 }
 
+/* Efecte hover del botó de cerca */
 .search-button:hover {
     background-color: #2980b9;
 }
 
+/* Resultats de la cerca */
 .search-results {
     max-height: 200px;
     overflow-y: auto;
@@ -57,6 +66,7 @@
     display: none;
 }
 
+/* Elements dels resultats de cerca */
 .search-result-item {
     padding: 12px 15px;
     cursor: pointer;
@@ -64,15 +74,18 @@
     transition: background-color 0.2s;
 }
 
+/* Efecte hover als resultats */
 .search-result-item:hover {
     background-color: #f5f5f5;
 }
 
+/* Llista de converses */
 .conversations-list {
     flex: 1;
     overflow-y: auto;
 }
 
+/* Capçalera de la llista de converses */
 .conversation-header {
     padding: 15px;
     font-weight: bold;
@@ -80,6 +93,7 @@
     background-color: #f9f9f9;
 }
 
+/* Elements de la conversa */
 .conversation-item {
     padding: 12px 15px;
     cursor: pointer;
@@ -89,14 +103,17 @@
     align-items: center;
 }
 
+/* Efecte hover a les converses */
 .conversation-item:hover {
     background-color: #f5f5f5;
 }
 
+/* Estil per a conversa activa/seleccionada */
 .conversation-item.active {
     background-color: #e3f2fd;
 }
 
+/* Avatar de la conversa (cercle amb inicials) */
 .conversation-avatar {
     width: 40px;
     height: 40px;
@@ -110,11 +127,13 @@
     font-weight: bold;
 }
 
+/* Contingut de la conversa */
 .conversation-content {
     flex: 1;
     min-width: 0;
 }
 
+/* Nom del contacte */
 .conversation-content strong {
     display: block;
     margin-bottom: 3px;
@@ -124,6 +143,7 @@
     text-overflow: ellipsis;
 }
 
+/* Darrera missatge */
 .conversation-content .last-message {
     font-size: 0.8rem;
     color: #7f8c8d;
@@ -132,6 +152,7 @@
     text-overflow: ellipsis;
 }
 
+/* Metadades de la conversa (hora i comptador) */
 .conversation-meta {
     display: flex;
     flex-direction: column;
@@ -139,12 +160,14 @@
     margin-left: 10px;
 }
 
+/* Hora del darrer missatge */
 .conversation-time {
     font-size: 0.7rem;
     color: #7f8c8d;
     margin-bottom: 5px;
 }
 
+/* Comptador de missatges no llegits */
 .unread-count {
     background-color: #3498db;
     color: white;
@@ -157,6 +180,7 @@
     font-size: 0.7rem;
 }
 
+/* Àrea del xat (dreta) */
 .chat-area {
     flex: 1;
     display: flex;
@@ -164,6 +188,7 @@
     background-color: #f5f5f5;
 }
 
+/* Capçalera del xat */
 .chat-header {
     padding: 15px 20px;
     background-color: white;
@@ -174,14 +199,17 @@
     align-items: center;
 }
 
+/* Contenidor dels missatges */
 .messages-container {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
     background-color: #e5ddd5;
+    /* Patró de fons similar a WhatsApp */
     background-image: url('https://web.whatsapp.com/img/bg-chat-tile-light_a4be512e7195b6b733d9110b408f075d.png');
 }
 
+/* Estils base pels missatges */
 .message {
     max-width: 70%;
     margin-bottom: 15px;
@@ -191,33 +219,39 @@
     word-wrap: break-word;
 }
 
+/* Missatges rebuts */
 .message.received {
     background-color: white;
     margin-right: auto;
     border-top-left-radius: 0;
 }
 
+/* Missatges enviats */
 .message.sent {
     background-color: #dcf8c6;
     margin-left: auto;
     border-top-right-radius: 0;
 }
 
+/* Nom del remitent */
 .message strong {
     color: #3498db;
     font-size: 0.9rem;
 }
 
+/* Text del missatge */
 .message-text {
     margin: 5px 0;
 }
 
+/* Hora del missatge */
 .message-time {
     font-size: 0.7rem;
     color: #7f8c8d;
     text-align: right;
 }
 
+/* Contenidor d'entrada de missatges */
 .message-input-container {
     padding: 15px;
     background-color: white;
@@ -226,6 +260,7 @@
     align-items: center;
 }
 
+/* Camp d'entrada de text */
 #messageInput {
     flex: 1;
     padding: 12px 15px;
@@ -235,6 +270,7 @@
     font-size: 0.9rem;
 }
 
+/* Botó d'enviar */
 .send-button {
     background-color: #3498db;
     color: white;
@@ -246,10 +282,12 @@
     transition: background-color 0.2s;
 }
 
+/* Efecte hover del botó d'enviar */
 .send-button:hover {
     background-color: #2980b9;
 }
 
+/* Estat quan no hi ha conversa seleccionada */
 .empty-chat {
     flex: 1;
     display: flex;
@@ -258,6 +296,7 @@
     background-color: #f5f5f5;
 }
 
+/* Contingut del xat buit */
 .empty-chat-content {
     text-align: center;
     color: #7f8c8d;
@@ -272,6 +311,7 @@
     margin-bottom: 20px;
 }
 
+/* Animació de càrrega */
 .loading-spinner {
     border: 3px solid #f3f3f3;
     border-top: 3px solid #3498db;
@@ -282,21 +322,24 @@
     margin: 0 auto;
 }
 
+/* Animació de rotació */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* Responsive */
+/* Estils responsius */
 @media (max-width: 768px) {
     .chat-sidebar {
         width: 100%;
     }
     
+    /* Per defecte amague l'àrea del xat */
     .chat-area {
         display: none;
     }
     
+    /* Mostra l'àrea del xat quan està activa */
     .chat-area.active {
         display: flex;
     }
