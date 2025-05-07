@@ -82,13 +82,30 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
+        const socket = io(`http://192.168.1.134:5000`, {
+            transports: ['websocket'],  // asegúrate que usa websocket
+            withCredentials: true       // importante si usas sesiones en Flask
+        });
+        socket.on('nuevo_mensaje', (data) => {
+            console.log('Nuevo mensaje recibido:', data.mensaje);
+            loadMessages();
+        });
+        
+        socket.on('connect', () => {
+            console.log('🟢 Conectado al servidor de sockets');
+        });
+        
+        socket.on('disconnect', () => {
+            console.log('🔴 Desconectado del servidor de sockets');
+        });
         // Global variables
         let currentConversationId = null;
         let currentRecipient = null;
         let isMobile = window.innerWidth < 768;
-
+        let id_usuario_mensaje = null;
+        let id_conversacion = null;
         // Initialize the chat
         document.addEventListener('DOMContentLoaded', function() {
             loadConversations();
@@ -214,8 +231,6 @@
                     throw new Error(result.message || 'No s\'ha pogut iniciar la conversa');
                 }
                 
-                currentConversationId = result.id_conversacion || result.id;
-                currentRecipient = username;
                 
                 // Update UI
                 document.getElementById('chatHeader').textContent = `Xat amb ${username}`;
@@ -319,6 +334,8 @@
                 document.getElementById('emptyChat').style.display = 'none';
             }
             
+            
+            
             // Update active state in list
             document.querySelectorAll('.conversation-item').forEach(item => {
                 item.classList.remove('active');
@@ -346,9 +363,36 @@
                 throw new Error(data.message || 'Error en carregar missatges');
             }
             const currentUserId = data.currentUserId;
-            console.log('Current User ID:', currentUserId); // Debugging line
+             // Debugging line
+            
             messagesContainer.innerHTML = '';
-    
+            let usuarioActual = null;
+
+            const respuesta = await fetch('/usuario_actual')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.error) {
+                    usuarioActual = data;
+                    
+                    // Ahora puedes usar usuarioActual.id_usuario en tus sockets:
+                    socket.emit('unirse_a_conversacion', {
+                        usuario: currentRecipient,
+                        id_usuario: usuarioActual.id_usuario
+                    });
+                    id_usuario_mensaje = usuarioActual.id_usuario;
+                } else {
+                    console.log("No autenticado");
+                }
+            });
+
+            
+            socket.on('unido_a_conversacion', (data) => {
+                console.log('Conectado a conversación con ID:', data.id_conversacion);
+                id_conversacion = data.id_conversacion; // Lo guardas para usarlo después al enviar mensajes
+                document.getElementById('messageInput').disabled = false;
+                document.getElementById('sendButton').disabled = false;
+            });
+            
             if (data.messages && data.messages.length > 0) {
                 data.messages.forEach(msg => {
                     const messageElement = document.createElement('div');
@@ -399,35 +443,27 @@
         async function sendMessage() {
             const messageInput = document.getElementById('messageInput');
             const message = messageInput.value.trim();
-            
-            if (!message || !currentConversationId) return;
-            
+            console.log('Mensaje a enviar:', message, 'id_conversacion', id_conversacion,'id usuario',id_usuario_mensaje); // Debugging line
+            if (!message || !id_conversacion || !id_usuario_mensaje) return;
+        
+            messageInput.disabled = true;
+            document.getElementById('sendButton').disabled = true;
+        
             try {
-                messageInput.disabled = true;
-                document.getElementById('sendButton').disabled = true;
-                
-                const response = await fetch('/enviar_mensaje', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id_conversacion: currentConversationId,
-                        mensaje: message
-                    })
+                // Emitir el mensaje al servidor por socket
+                socket.emit('enviar_mensaje', {
+                    id_conversacion: id_conversacion,
+                    id_remitente: id_usuario_mensaje,
+                    mensaje: message
                 });
-                
-                const result = await response.json();
-                
-                if (response.status !== 201) {
-                    throw new Error(result.message || 'No s\'ha pogut enviar el missatge');
-                }
-                
+        
+                // Limpia el input y actualiza la vista
                 messageInput.value = '';
                 await loadMessages(currentConversationId);
                 await loadConversations();
+        
             } catch (error) {
-                console.error('Error sending message:', error);
+                console.error('Error enviando mensaje:', error);
                 alert(error.message || 'Error en enviar el missatge');
             } finally {
                 messageInput.disabled = false;
@@ -435,6 +471,8 @@
                 messageInput.focus();
             }
         }
+        
+        
     </script>
 </body>
 </html>
