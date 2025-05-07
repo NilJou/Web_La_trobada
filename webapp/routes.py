@@ -3,7 +3,7 @@ from flask import Flask, render_template, Blueprint, jsonify, request, session, 
 import requests
 
 # Definició de l'adreça IP de l'API
-IP_API = "192.168.1.134:5000"
+IP_API = "10.100.3.25:5000"
 
 # Creació d'un Blueprint
 routes = Blueprint('routes', __name__)
