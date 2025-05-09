@@ -51,7 +51,7 @@
                             <div class="titol-opcio">Canvi de nom</div>
                             <div class="descripcio-opcio">Modifica el teu nom d'usuari</div>
                         </div>
-                        <button class="boto-opcio">Canviar</button>
+                        <button class="boto-opcio" onclick="mostrarModalCanviNom()">Canviar</button>
                     </div>
                     
                     <div class="opcio-ajust">
@@ -133,6 +133,32 @@
         </div>
         <div id="overlayCanviContrasenya" class="popup-overlay"></div>
 
+        <!-- Modal per al canvi de nom d'usuari -->
+        <div id="modalCanviNom" class="cookie-popup">
+            <div class="cookie-header">
+                <h3>Canviar nom d'usuari</h3>
+                <button class="close-btn" onclick="amagarModalCanviNom()">&times;</button>
+            </div>
+            <div class="cookie-content">
+                <form id="formCanviNom" onsubmit="enviarCanviNom(event)">
+                    <div class="cookie-option">
+                        <label for="nou_nom">Nou nom d'usuari:</label>
+                        <input type="text" id="nou_nom" name="nou_nom" required>
+                    </div>
+                    <div class="cookie-option">
+                        <label for="contrasenya_nom">Contrasenya actual:</label>
+                        <input type="password" id="contrasenya_nom" name="contrasenya_nom" required>
+                    </div>
+                    <div class="cookie-buttons">
+                        <button type="button" class="boto-opcio" onclick="amagarModalCanviNom()">Cancel·lar</button>
+                        <button type="submit" class="boto-opcio">Canviar nom</button>
+                    </div>
+                </form>
+                <div id="missatgeErrorNom" style="color: red; margin-top: 10px; display: none;"></div>
+            </div>
+        </div>
+        <div id="overlayCanviNom" class="popup-overlay"></div>
+
         <script>
             function mostrarModalCanviContrasenya() {
                 document.getElementById('modalCanviContrasenya').classList.add('active');
@@ -186,6 +212,60 @@
                         amagarModalCanviContrasenya();
                     } else {
                         missatgeError.textContent = data.message || "Error en canviar la contrasenya";
+                        missatgeError.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    missatgeError.textContent = "Error de connexió amb el servidor";
+                    missatgeError.style.display = 'block';
+                });
+            }
+
+            function mostrarModalCanviNom() {
+                document.getElementById('modalCanviNom').classList.add('active');
+                document.getElementById('overlayCanviNom').classList.add('active');
+            }
+
+            function amagarModalCanviNom() {
+                document.getElementById('modalCanviNom').classList.remove('active');
+                document.getElementById('overlayCanviNom').classList.remove('active');
+                document.getElementById('missatgeErrorNom').style.display = 'none';
+                document.getElementById('formCanviNom').reset();
+            }
+
+            function enviarCanviNom(event) {
+                event.preventDefault();
+                
+                const nouNom = document.getElementById('nou_nom').value;
+                const contrasenya = document.getElementById('contrasenya_nom').value;
+                
+                const missatgeError = document.getElementById('missatgeErrorNom');
+                
+                // Validació bàsica
+                if (nouNom.length < 3) {
+                    missatgeError.textContent = "El nom d'usuari ha de tenir almenys 3 caràcters";
+                    missatgeError.style.display = 'block';
+                    return;
+                }
+                
+                // Enviar dades al servidor
+                fetch('/canviar_nom', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nou_nom: nouNom,
+                        contrasenya: contrasenya
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Nom d\'usuari canviat correctament.');
+                        window.location.href = '/usuari'; // Recargar la página para mostrar el nuevo nombre
+                    } else {
+                        missatgeError.textContent = data.message || "Error en canviar el nom d'usuari";
                         missatgeError.style.display = 'block';
                     }
                 })

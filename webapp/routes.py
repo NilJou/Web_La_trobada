@@ -546,3 +546,43 @@ def canviar_contrasenya():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+    
+# Ruta per canviar nom d'usuari
+@routes.route('/canviar_nom', methods=['POST'])
+def canviar_nom():
+    try:
+        # Verificar si el usuario ha iniciado sesión
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No s'ha iniciat sessió"}), 401
+
+        # Obtener datos del formulario
+        data = request.get_json()
+        nou_nom = data.get('nou_nom')
+        contrasenya = data.get('contrasenya')
+
+        if not all([nou_nom, contrasenya]):
+            return jsonify({'status': 'error', 'message': "Falten dades necessàries"}), 400
+
+        # Enviar solicitud a la API para cambiar el nombre
+        url = f"http://{IP_API}/api/informacion/nom"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            "usuari": session['user'],
+            "nou_nom": nou_nom,
+            "contrasenya": contrasenya
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+
+        # Procesar la respuesta
+        if response.status_code == 200:
+            # Actualizar el nombre en la sesión si el cambio fue exitoso
+            session['user'] = nou_nom
+            return jsonify({'status': 'success', 'message': 'Nom d\'usuari canviat correctament'})
+        else:
+            error_msg = response.json().get('error', "Error en canviar el nom d'usuari")
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
+    
