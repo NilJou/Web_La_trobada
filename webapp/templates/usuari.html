@@ -257,13 +257,14 @@
                     body: JSON.stringify({
                         nou_nom: nouNom,
                         contrasenya: contrasenya
+                        
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
                         alert('Nom d\'usuari canviat correctament.');
-                        window.location.href = '/usuari'; // Recargar la página para mostrar el nuevo nombre
+                        window.location.href = '/usuari';
                     } else {
                         missatgeError.textContent = data.message || "Error en canviar el nom d'usuari";
                         missatgeError.style.display = 'block';

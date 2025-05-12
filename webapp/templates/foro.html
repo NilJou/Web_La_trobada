@@ -3,8 +3,123 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada</title>
+        <title>La trobada - Foro</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+        <style>
+            /* Estilos específicos para el foro */
+            .forum-container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-top: 30px;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .forum-post {
+                background-color: white;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                border-left: 4px solid #6750a4;
+            }
+            
+            .forum-post:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+            
+            .post-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                background-color: #6750a4;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+            
+            .username {
+                font-weight: 600;
+                color: #6750a4;
+                font-size: 1.1rem;
+            }
+            
+            .post-content {
+                padding-left: 50px;
+                color: #333;
+                line-height: 1.5;
+            }
+            
+            .post-actions {
+                display: flex;
+                gap: 15px;
+                padding-left: 50px;
+                margin-top: 15px;
+            }
+            
+            .action-btn {
+                background: none;
+                border: none;
+                color: #6750a4;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 0.9rem;
+                transition: all 0.2s;
+            }
+            
+            .action-btn:hover {
+                color: #5a4490;
+                text-decoration: underline;
+            }
+            
+            .new-post {
+                background-color: #6750a4;
+                color: white;
+                border: none;
+                border-radius: 20px;
+                padding: 10px 20px;
+                font-size: 1rem;
+                cursor: pointer;
+                margin-top: 30px;
+                margin-left: auto;
+                display: block;
+                transition: all 0.3s ease;
+            }
+            
+            .new-post:hover {
+                background-color: #5a4490;
+                transform: translateY(-2px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .forum-title {
+                text-align: center;
+                margin-bottom: 10px;
+                color: #6750a4;
+            }
+
+            .forum-subtitle {
+                text-align: center;
+                color: #666;
+                margin-bottom: 30px;
+                font-size: 1.1rem;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar">
@@ -31,10 +146,62 @@
             </div>
         </nav>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal del foro -->
         <main class="main-content">
-            <h1>Benvingut/da a La Trobada</h1>
-            <p>Aquesta és la pàgina principal. Pots afegir el teu contingut aquí.</p>
+            <h1 class="forum-title">Fòrum de La Trobada</h1>
+            <p class="forum-subtitle">Comparteix les teves experiències i pregunta als altres usuaris</p>
+            
+            <div class="forum-container">
+                <!-- Post 1 -->
+                <div class="forum-post">
+                    <div class="post-header">
+                        <div class="user-avatar">U</div>
+                        <span class="username">@UsuarioX</span>
+                    </div>
+                    <div class="post-content">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn">Respondre</button>
+                        <button class="action-btn">M'agrada</button>
+                        <button class="action-btn">Compartir</button>
+                    </div>
+                </div>
+                
+                <!-- Post 2 -->
+                <div class="forum-post">
+                    <div class="post-header">
+                        <div class="user-avatar">U</div>
+                        <span class="username">@UsuarioX</span>
+                    </div>
+                    <div class="post-content">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl.</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn">Respondre</button>
+                        <button class="action-btn">M'agrada</button>
+                        <button class="action-btn">Compartir</button>
+                    </div>
+                </div>
+                
+                <!-- Post 3 -->
+                <div class="forum-post">
+                    <div class="post-header">
+                        <div class="user-avatar">U</div>
+                        <span class="username">@UsuarioX</span>
+                    </div>
+                    <div class="post-content">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt.</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn">Respondre</button>
+                        <button class="action-btn">M'agrada</button>
+                        <button class="action-btn">Compartir</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="new-post">+ Nou Post</button>
         </main>
     </body>
 </html>
