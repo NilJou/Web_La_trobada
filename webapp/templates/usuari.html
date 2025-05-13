@@ -8,273 +8,383 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='usuari_style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">La trobada</div>
-            <div class="nav-links">
-                <form action="/foro">
-                    <input type="submit" value="Fòrum">
-                </form>
-                <form action="/escaner">
-                    <input type="submit" value="Escàner">
-                </form>
-                <form action="/colleccio">
-                    <input type="submit" value="Col·lecció">
-                </form>
-                <form action="/xat">
-                    <input type="submit" value="Xat">
-                </form>
-            </div>
-            <div class="user-section">
-                <div class="user-icon">{{ username[0]|upper }}</div>
-                <form action="/usuari">
-                    <input type="submit" value="Usuari">
-                </form>
-            </div>
-        </nav>
+<body>
+    <nav class="navbar">
+        <div class="logo">La trobada</div>
+        <div class="nav-links">
+            <form action="/foro">
+                <input type="submit" value="Fòrum">
+            </form>
+            <form action="/escaner">
+                <input type="submit" value="Escàner">
+            </form>
+            <form action="/colleccio">
+                <input type="submit" value="Col·lecció">
+            </form>
+            <form action="/xat">
+                <input type="submit" value="Xat">
+            </form>
+        </div>
+        <div class="user-section">
+            <div class="user-icon">{{ username[0]|upper }}</div>
+            <form action="/usuari">
+                <input type="submit" value="Usuari">
+            </form>
+        </div>
+    </nav>
 
-        <main class="main-content">
-            <div class="contenidor-ajustos">
-                <div class="capcalera-ajustos">
-                    <div class="nom-usuari">{{ username }}</div>
-                    <div class="subtitol-ajustos">Gestiona els teus ajustos i preferències</div>
+    <main class="main-content">
+        <div class="contenidor-ajustos">
+            <div class="capcalera-ajustos">
+                <div class="nom-usuari">{{ username }}</div>
+                <div class="subtitol-ajustos">Gestiona els teus ajustos i preferències</div>
+            </div>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-user-shield"></i>
+                    Privacitat i seguretat
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Canvi de nom</div>
+                        <div class="descripcio-opcio">Modifica el teu nom d'usuari</div>
+                    </div>
+                    <button class="boto-opcio" onclick="mostrarModalCanviNom()">Canviar</button>
                 </div>
                 
-                <div class="seccio-ajustos">
-                    <h2 class="titol-seccio">
-                        <i class="icona-seccio fas fa-user-shield"></i>
-                        Privacitat i seguretat
-                    </h2>
-                    
-                    <div class="opcio-ajust">
-                        <div class="text-opcio">
-                            <div class="titol-opcio">Canvi de nom</div>
-                            <div class="descripcio-opcio">Modifica el teu nom d'usuari</div>
-                        </div>
-                        <button class="boto-opcio" onclick="mostrarModalCanviNom()">Canviar</button>
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Contrasenya i accés</div>
+                        <div class="descripcio-opcio">Canvia la teva contrasenya i mètodes d'accés</div>
                     </div>
-                    
-                    <div class="opcio-ajust">
-                        <div class="text-opcio">
-                            <div class="titol-opcio">Contrasenya i accés</div>
-                            <div class="descripcio-opcio">Canvia la teva contrasenya i mètodes d'accés</div>
-                        </div>
-                        <button class="boto-opcio" onclick="mostrarModalCanviContrasenya()">Modificar</button>
-                    </div>
-                </div>
-                
-                <div class="seccio-ajustos">
-                    <h2 class="titol-seccio">
-                        <i class="icona-seccio fas fa-headset"></i>
-                        Suport i ajuda
-                    </h2>
-                    
-                    <div class="opcio-ajust">
-                        <div class="text-opcio">
-                            <div class="titol-opcio">Contacta amb nosaltres</div>
-                            <div class="descripcio-opcio">Tens algun problema o suggerència?</div>
-                        </div>
-                        <button class="boto-opcio">Contactar</button>
-                    </div>
-                    
-                    <div class="opcio-ajust">
-                        <div class="text-opcio">
-                            <div class="titol-opcio">Preguntes freqüents</div>
-                            <div class="descripcio-opcio">Troba respostes a les teves preguntes</div>
-                        </div>
-                        <button class="boto-opcio">Veure FAQ</button>
-                    </div>
-                </div>
-                
-                <div class="seccio-ajustos">
-                    <h2 class="titol-seccio">
-                        <i class="icona-seccio fas fa-globe"></i>
-                        Idioma
-                    </h2>
-                    
-                    <div class="opcio-ajust">
-                        <div class="text-opcio">
-                            <div class="titol-opcio">Idioma de l'aplicació</div>
-                            <div class="descripcio-opcio">Selecciona l'idioma que prefereixes</div>
-                        </div>
-                        <button class="boto-opcio">Canviar idioma</button>
-                    </div>
+                    <button class="boto-opcio" onclick="mostrarModalCanviContrasenya()">Modificar</button>
                 </div>
             </div>
-        </main>
-
-        <!-- Modal per al canvi de contrasenya -->
-        <div id="modalCanviContrasenya" class="cookie-popup">
-            <div class="cookie-header">
-                <h3>Canviar contrasenya</h3>
-                <button class="close-btn" onclick="amagarModalCanviContrasenya()">&times;</button>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-headset"></i>
+                    Suport i ajuda
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Contacta amb nosaltres</div>
+                        <div class="descripcio-opcio">Tens algun problema o suggeriment?</div>
+                    </div>
+                    <button class="boto-opcio" onclick="mostrarModalContacte()">Contactar</button>
+                </div>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Preguntes freqüents</div>
+                        <div class="descripcio-opcio">Troba respostes a les teves preguntes</div>
+                    </div>
+                    <button class="boto-opcio" onclick="mostrarModalFAQ()">Veure FAQ</button>
+                </div>
             </div>
-            <div class="cookie-content">
-                <form id="formCanviContrasenya" onsubmit="enviarCanviContrasenya(event)">
-                    <div class="cookie-option">
-                        <label for="contrasenya_actual">Contrasenya actual:</label>
-                        <input type="password" id="contrasenya_actual" name="contrasenya_actual" required>
+            
+            <div class="seccio-ajustos">
+                <h2 class="titol-seccio">
+                    <i class="icona-seccio fas fa-globe"></i>
+                    Idioma
+                </h2>
+                
+                <div class="opcio-ajust">
+                    <div class="text-opcio">
+                        <div class="titol-opcio">Idioma de l'aplicació</div>
+                        <div class="descripcio-opcio">Selecciona l'idioma que prefereixes</div>
                     </div>
-                    <div class="cookie-option">
-                        <label for="nova_contrasenya">Nova contrasenya:</label>
-                        <input type="password" id="nova_contrasenya" name="nova_contrasenya" required>
-                    </div>
-                    <div class="cookie-option">
-                        <label for="confirmar_contrasenya">Confirmar nova contrasenya:</label>
-                        <input type="password" id="confirmar_contrasenya" name="confirmar_contrasenya" required>
-                    </div>
-                    <div class="cookie-buttons">
-                        <button type="button" class="boto-opcio" onclick="amagarModalCanviContrasenya()">Cancel·lar</button>
-                        <button type="submit" class="boto-opcio">Canviar contrasenya</button>
-                    </div>
-                </form>
-                <div id="missatgeError" style="color: red; margin-top: 10px; display: none;"></div>
+                    <button class="boto-opcio">Canviar idioma</button>
+                </div>
             </div>
         </div>
-        <div id="overlayCanviContrasenya" class="popup-overlay"></div>
+    </main>
 
-        <!-- Modal per al canvi de nom d'usuari -->
-        <div id="modalCanviNom" class="cookie-popup">
-            <div class="cookie-header">
-                <h3>Canviar nom d'usuari</h3>
-                <button class="close-btn" onclick="amagarModalCanviNom()">&times;</button>
-            </div>
-            <div class="cookie-content">
-                <form id="formCanviNom" onsubmit="enviarCanviNom(event)">
-                    <div class="cookie-option">
-                        <label for="nou_nom">Nou nom d'usuari:</label>
-                        <input type="text" id="nou_nom" name="nou_nom" required>
-                    </div>
-                    <div class="cookie-option">
-                        <label for="contrasenya_nom">Contrasenya actual:</label>
-                        <input type="password" id="contrasenya_nom" name="contrasenya_nom" required>
-                    </div>
-                    <div class="cookie-buttons">
-                        <button type="button" class="boto-opcio" onclick="amagarModalCanviNom()">Cancel·lar</button>
-                        <button type="submit" class="boto-opcio">Canviar nom</button>
-                    </div>
-                </form>
-                <div id="missatgeErrorNom" style="color: red; margin-top: 10px; display: none;"></div>
+    <!-- Modal per al canvi de contrasenya -->
+    <div id="modalCanviContrasenya" class="cookie-popup">
+        <div class="cookie-header">
+            <h3>Canviar contrasenya</h3>
+            <button class="close-btn" onclick="amagarModalCanviContrasenya()">&times;</button>
+        </div>
+        <div class="cookie-content">
+            <form id="formCanviContrasenya" onsubmit="enviarCanviContrasenya(event)">
+                <div class="cookie-option">
+                    <label for="contrasenya_actual">Contrasenya actual:</label>
+                    <input type="password" id="contrasenya_actual" name="contrasenya_actual" required>
+                </div>
+                <div class="cookie-option">
+                    <label for="nova_contrasenya">Nova contrasenya:</label>
+                    <input type="password" id="nova_contrasenya" name="nova_contrasenya" required>
+                </div>
+                <div class="cookie-option">
+                    <label for="confirmar_contrasenya">Confirmar nova contrasenya:</label>
+                    <input type="password" id="confirmar_contrasenya" name="confirmar_contrasenya" required>
+                </div>
+                <div class="cookie-buttons">
+                    <button type="button" class="boto-opcio" onclick="amagarModalCanviContrasenya()">Cancel·lar</button>
+                    <button type="submit" class="boto-opcio">Canviar contrasenya</button>
+                </div>
+            </form>
+            <div id="missatgeError" style="color: red; margin-top: 10px; display: none;"></div>
+        </div>
+    </div>
+    <div id="overlayCanviContrasenya" class="popup-overlay"></div>
+
+    <!-- Modal per al canvi de nom d'usuari -->
+    <div id="modalCanviNom" class="cookie-popup">
+        <div class="cookie-header">
+            <h3>Canviar nom d'usuari</h3>
+            <button class="close-btn" onclick="amagarModalCanviNom()">&times;</button>
+        </div>
+        <div class="cookie-content">
+            <form id="formCanviNom" onsubmit="enviarCanviNom(event)">
+                <div class="cookie-option">
+                    <label for="nou_nom">Nou nom d'usuari:</label>
+                    <input type="text" id="nou_nom" name="nou_nom" required>
+                </div>
+                <div class="cookie-option">
+                    <label for="contrasenya_nom">Contrasenya actual:</label>
+                    <input type="password" id="contrasenya_nom" name="contrasenya_nom" required>
+                </div>
+                <div class="cookie-buttons">
+                    <button type="button" class="boto-opcio" onclick="amagarModalCanviNom()">Cancel·lar</button>
+                    <button type="submit" class="boto-opcio">Canviar nom</button>
+                </div>
+            </form>
+            <div id="missatgeErrorNom" style="color: red; margin-top: 10px; display: none;"></div>
+        </div>
+    </div>
+    <div id="overlayCanviNom" class="popup-overlay"></div>
+
+    <!-- Modal per a les preguntes freqüents -->
+    <div id="modalFAQ" class="cookie-popup">
+        <div class="cookie-header">
+            <h3>Preguntes Freqüents</h3>
+            <button class="close-btn" onclick="amagarModalFAQ()">&times;</button>
+        </div>
+        <div class="cookie-content">
+            <div class="faq-container">
+                <div class="faq-item">
+                    <h4>Com puc afegir cartes a la meva col·lecció?</h4>
+                    <p>Pots escanejar les teves cartes mitjançant la càmera del teu dispositiu. L'aplicació les reconeixerà automàticament i les afegirà a la teva col·lecció personal.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>És possible vendre cartes directament a altres usuaris?</h4>
+                    <p>Sí, pots posar cartes a la venda amb un preu en euros o oferir-les per a intercanvi. Altres usuaris poden contactar-te per acordar l'operació.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>L'aplicació cobra comissions per les vendes o intercanvis?</h4>
+                    <p>No, l'aplicació no cobra cap comissió. L'únic cost és el de l'enviament, que queda a càrrec dels usuaris.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Com es gestionen els enviaments de les cartes?</h4>
+                    <p>Els usuaris acorden entre ells l'enviament. L'aplicació pot recomanar mètodes d'enviament segurs, però no actua com a intermediari logístic.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>És segur comprar o intercanviar cartes amb altres usuaris?</h4>
+                    <p>Sí, cada usuari té un perfil amb valoracions i comentaris. Això ajuda a saber si és fiable abans de fer una transacció.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Puc accedir a l'aplicació des del meu ordinador?</h4>
+                    <p>Sí, hi ha una versió web (webapp) que et permet accedir a totes les funcions de la plataforma des del navegador.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Quines cartes són compatibles amb el reconeixement per escàner?</h4>
+                    <p>L'aplicació utilitza l'API oficial de Magic: The Gathering, per tant, pot reconèixer pràcticament totes les cartes oficials de la història del joc.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Què faig si una carta no és reconeguda correctament?</h4>
+                    <p>Pots editar manualment la informació de la carta o buscar-la pel nom i afegir-la a la col·lecció.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Puc comunicar-me amb altres usuaris dins l'aplicació?</h4>
+                    <p>Sí, hi ha un sistema de missatgeria per negociar intercanvis o vendes, i també un fòrum per fer preguntes i compartir informació.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>He de crear un compte per poder utilitzar l'app?</h4>
+                    <p>Sí, per accedir a totes les funcionalitats (col·lecció, vendes, intercanvis, missatges...) és necessari crear un compte amb correu electrònic i contrasenya.</p>
+                </div>
             </div>
         </div>
-        <div id="overlayCanviNom" class="popup-overlay"></div>
+    </div>
+    <div id="overlayFAQ" class="popup-overlay"></div>
 
-        <script>
-            function mostrarModalCanviContrasenya() {
-                document.getElementById('modalCanviContrasenya').classList.add('active');
-                document.getElementById('overlayCanviContrasenya').classList.add('active');
+    <!-- Modal per a contacte -->
+    <div id="modalContacte" class="cookie-popup">
+        <div class="cookie-header">
+            <h3>Contacta amb nosaltres</h3>
+            <button class="close-btn" onclick="amagarModalContacte()">&times;</button>
+        </div>
+        <div class="cookie-content">
+            <div class="contacte-container">
+                <div class="contacte-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>608-23-69-69</span>
+                </div>
+                <div class="contacte-item">
+                    <i class="fab fa-instagram"></i>
+                    <span>@LaTrobadaMTG</span>
+                </div>
+                <div class="contacte-item">
+                    <i class="fab fa-twitter"></i>
+                    <span>@LaTrobadaMTG</span>
+                </div>
+                <p class="contacte-nota">Horari d'atenció: Dilluns a Divendres de 9:00 a 18:00</p>
+            </div>
+        </div>
+    </div>
+    <div id="overlayContacte" class="popup-overlay"></div>
+
+    <script>
+        function mostrarModalCanviContrasenya() {
+            document.getElementById('modalCanviContrasenya').classList.add('active');
+            document.getElementById('overlayCanviContrasenya').classList.add('active');
+        }
+
+        function amagarModalCanviContrasenya() {
+            document.getElementById('modalCanviContrasenya').classList.remove('active');
+            document.getElementById('overlayCanviContrasenya').classList.remove('active');
+            document.getElementById('missatgeError').style.display = 'none';
+            document.getElementById('formCanviContrasenya').reset();
+        }
+
+        function enviarCanviContrasenya(event) {
+            event.preventDefault();
+            
+            const contrasenyaActual = document.getElementById('contrasenya_actual').value;
+            const novaContrasenya = document.getElementById('nova_contrasenya').value;
+            const confirmarContrasenya = document.getElementById('confirmar_contrasenya').value;
+            
+            const missatgeError = document.getElementById('missatgeError');
+            
+            // Validació bàsica
+            if (novaContrasenya !== confirmarContrasenya) {
+                missatgeError.textContent = "Les contrasenyes noves no coincideixen";
+                missatgeError.style.display = 'block';
+                return;
             }
-
-            function amagarModalCanviContrasenya() {
-                document.getElementById('modalCanviContrasenya').classList.remove('active');
-                document.getElementById('overlayCanviContrasenya').classList.remove('active');
-                document.getElementById('missatgeError').style.display = 'none';
-                document.getElementById('formCanviContrasenya').reset();
+            
+            if (novaContrasenya.length < 6) {
+                missatgeError.textContent = "La contrasenya ha de tenir almenys 6 caràcters";
+                missatgeError.style.display = 'block';
+                return;
             }
-
-            function enviarCanviContrasenya(event) {
-                event.preventDefault();
-                
-                const contrasenyaActual = document.getElementById('contrasenya_actual').value;
-                const novaContrasenya = document.getElementById('nova_contrasenya').value;
-                const confirmarContrasenya = document.getElementById('confirmar_contrasenya').value;
-                
-                const missatgeError = document.getElementById('missatgeError');
-                
-                // Validació bàsica
-                if (novaContrasenya !== confirmarContrasenya) {
-                    missatgeError.textContent = "Les contrasenyes noves no coincideixen";
+            
+            // Enviar dades al servidor
+            fetch('/canviar_contrasenya', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contrasenya_actual: contrasenyaActual,
+                    nova_contrasenya: novaContrasenya
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Contrasenya canviada correctament');
+                    amagarModalCanviContrasenya();
+                } else {
+                    missatgeError.textContent = data.message || "Error en canviar la contrasenya";
                     missatgeError.style.display = 'block';
-                    return;
                 }
-                
-                if (novaContrasenya.length < 6) {
-                    missatgeError.textContent = "La contrasenya ha de tenir almenys 6 caràcters";
+            })
+            .catch(error => {
+                missatgeError.textContent = "Error de connexió amb el servidor";
+                missatgeError.style.display = 'block';
+            });
+        }
+
+        function mostrarModalCanviNom() {
+            document.getElementById('modalCanviNom').classList.add('active');
+            document.getElementById('overlayCanviNom').classList.add('active');
+        }
+
+        function amagarModalCanviNom() {
+            document.getElementById('modalCanviNom').classList.remove('active');
+            document.getElementById('overlayCanviNom').classList.remove('active');
+            document.getElementById('missatgeErrorNom').style.display = 'none';
+            document.getElementById('formCanviNom').reset();
+        }
+
+        function enviarCanviNom(event) {
+            event.preventDefault();
+            
+            const nouNom = document.getElementById('nou_nom').value;
+            const contrasenya = document.getElementById('contrasenya_nom').value;
+            
+            const missatgeError = document.getElementById('missatgeErrorNom');
+            
+            // Validació bàsica
+            if (nouNom.length < 3) {
+                missatgeError.textContent = "El nom d'usuari ha de tenir almenys 3 caràcters";
+                missatgeError.style.display = 'block';
+                return;
+            }
+            
+            // Enviar dades al servidor
+            fetch('/canviar_nom', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nou_nom: nouNom,
+                    contrasenya: contrasenya
+                    
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Nom d\'usuari canviat correctament.');
+                    window.location.href = '/usuari';
+                } else {
+                    missatgeError.textContent = data.message || "Error en canviar el nom d'usuari";
                     missatgeError.style.display = 'block';
-                    return;
                 }
-                
-                // Enviar dades al servidor
-                fetch('/canviar_contrasenya', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        contrasenya_actual: contrasenyaActual,
-                        nova_contrasenya: novaContrasenya
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Contrasenya canviada correctament');
-                        amagarModalCanviContrasenya();
-                    } else {
-                        missatgeError.textContent = data.message || "Error en canviar la contrasenya";
-                        missatgeError.style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    missatgeError.textContent = "Error de connexió amb el servidor";
-                    missatgeError.style.display = 'block';
-                });
-            }
+            })
+            .catch(error => {
+                missatgeError.textContent = "Error de connexió amb el servidor";
+                missatgeError.style.display = 'block';
+            });
+        }
 
-            function mostrarModalCanviNom() {
-                document.getElementById('modalCanviNom').classList.add('active');
-                document.getElementById('overlayCanviNom').classList.add('active');
-            }
+        // Funcions per al modal de FAQ
+        function mostrarModalFAQ() {
+            document.getElementById('modalFAQ').classList.add('active');
+            document.getElementById('overlayFAQ').classList.add('active');
+        }
 
-            function amagarModalCanviNom() {
-                document.getElementById('modalCanviNom').classList.remove('active');
-                document.getElementById('overlayCanviNom').classList.remove('active');
-                document.getElementById('missatgeErrorNom').style.display = 'none';
-                document.getElementById('formCanviNom').reset();
-            }
+        function amagarModalFAQ() {
+            document.getElementById('modalFAQ').classList.remove('active');
+            document.getElementById('overlayFAQ').classList.remove('active');
+        }
 
-            function enviarCanviNom(event) {
-                event.preventDefault();
-                
-                const nouNom = document.getElementById('nou_nom').value;
-                const contrasenya = document.getElementById('contrasenya_nom').value;
-                
-                const missatgeError = document.getElementById('missatgeErrorNom');
-                
-                // Validació bàsica
-                if (nouNom.length < 3) {
-                    missatgeError.textContent = "El nom d'usuari ha de tenir almenys 3 caràcters";
-                    missatgeError.style.display = 'block';
-                    return;
-                }
-                
-                // Enviar dades al servidor
-                fetch('/canviar_nom', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        nou_nom: nouNom,
-                        contrasenya: contrasenya
-                        
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Nom d\'usuari canviat correctament.');
-                        window.location.href = '/usuari';
-                    } else {
-                        missatgeError.textContent = data.message || "Error en canviar el nom d'usuari";
-                        missatgeError.style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    missatgeError.textContent = "Error de connexió amb el servidor";
-                    missatgeError.style.display = 'block';
-                });
-            }
-        </script>
-    </body>
+        // Funcions per al modal de contacte
+        function mostrarModalContacte() {
+            document.getElementById('modalContacte').classList.add('active');
+            document.getElementById('overlayContacte').classList.add('active');
+        }
+
+        function amagarModalContacte() {
+            document.getElementById('modalContacte').classList.remove('active');
+            document.getElementById('overlayContacte').classList.remove('active');
+        }
+    </script>
+</body>
 </html>
