@@ -100,10 +100,60 @@ def register():
     except Exception as e:
         return render_template('register.html', error=f"S'ha produït un error: {str(e)}")
 
-# Ruta per mostrar el fòrum
-@routes.route('/foro')
+# Ruta per veure el fòrum
+@routes.route('/foro', methods=['GET', 'POST'])
 def foro():
-    return render_template('foro.html')
+    try:
+        # Obtener los posts del foro desde la API
+        url = f"http://{IP_API}/api/foro/mostrar_missatges"
+        response = requests.get(url)
+       
+        if response.status_code == 200:
+            posts = response.json()
+            print(posts)
+            # Procesar los posts para incluir toda la información necesaria
+            processed_posts = []
+            for post in posts:
+                processed = {
+                    'nom_usuari': post.get('username'),
+                    'missatge': post.get('missatge'),
+                }
+                processed_posts.append(processed)
+            
+            return render_template('foro.html', posts=processed_posts)
+        else:
+            return render_template('foro.html', posts=[], error="Error al cargar los posts")
+    except Exception as e:
+        return render_template('foro.html', posts=[], error=f"Error: {str(e)}")
+
+# Ruta para crear un nuevo post
+@routes.route('/crear_post', methods=['POST'])
+def crear_post():
+    try:
+        if 'user' not in session:
+            return jsonify({'status': 'error', 'message': "No has iniciado sesión"}), 401
+            
+        content = request.form.get('content')
+        if not content:
+            return jsonify({'status': 'error', 'message': "El contenido no puede estar vacío"}), 400
+            
+        url = f"http://{IP_API}/api/foro/nou_missatge"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            'id_user': session['user'],
+            'mensaje': content
+        }
+        
+        response = requests.post(url, json=payload, headers=headers)
+        
+        if response.status_code == 201:
+            return jsonify({'status': 'success', 'message': 'Post creado correctamente'})
+        else:
+            error_msg = response.json().get('error', 'Error al crear el post')
+            return jsonify({'status': 'error', 'message': error_msg}), response.status_code
+            
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # Ruta per mostrar l'escàner
 @routes.route('/escaner')
@@ -585,4 +635,4 @@ def canviar_nom():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
-    
+

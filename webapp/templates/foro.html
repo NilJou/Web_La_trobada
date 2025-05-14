@@ -1,207 +1,126 @@
 <!DOCTYPE html>
 <html lang="ca">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La trobada - Foro</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-        <style>
-            /* Estilos específicos para el foro */
-            .forum-container {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                margin-top: 30px;
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .forum-post {
-                background-color: white;
-                border-radius: 8px;
-                padding: 20px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-                border-left: 4px solid #6750a4;
-            }
-            
-            .forum-post:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            }
-            
-            .post-header {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 15px;
-            }
-            
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                background-color: #6750a4;
-                color: white;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                font-size: 1.1rem;
-            }
-            
-            .username {
-                font-weight: 600;
-                color: #6750a4;
-                font-size: 1.1rem;
-            }
-            
-            .post-content {
-                padding-left: 50px;
-                color: #333;
-                line-height: 1.5;
-            }
-            
-            .post-actions {
-                display: flex;
-                gap: 15px;
-                padding-left: 50px;
-                margin-top: 15px;
-            }
-            
-            .action-btn {
-                background: none;
-                border: none;
-                color: #6750a4;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                font-size: 0.9rem;
-                transition: all 0.2s;
-            }
-            
-            .action-btn:hover {
-                color: #5a4490;
-                text-decoration: underline;
-            }
-            
-            .new-post {
-                background-color: #6750a4;
-                color: white;
-                border: none;
-                border-radius: 20px;
-                padding: 10px 20px;
-                font-size: 1rem;
-                cursor: pointer;
-                margin-top: 30px;
-                margin-left: auto;
-                display: block;
-                transition: all 0.3s ease;
-            }
-            
-            .new-post:hover {
-                background-color: #5a4490;
-                transform: translateY(-2px);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La trobada - Foro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='foro_style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">La trobada</div>
+        <div class="nav-links">
+            <form action="/foro">
+                <input type="submit" value="Foro">
+            </form>
+            <form action="/escaner">
+                <input type="submit" value="Escaner">
+            </form>
+            <form action="/colleccio">
+                <input type="submit" value="Col·lecció">
+            </form>
+            <form action="/xat">
+                <input type="submit" value="Xat">
+            </form>
+        </div>
+        <div class="user-section">
+            <div class="user-icon">{{ session['user'][0]|upper if 'user' in session else 'U' }}</div>
+            <form action="/usuari">
+                <input type="submit" value="Usuari">
+            </form>
+        </div>
+    </nav>
 
-            .forum-title {
-                text-align: center;
-                margin-bottom: 10px;
-                color: #6750a4;
-            }
-
-            .forum-subtitle {
-                text-align: center;
-                color: #666;
-                margin-bottom: 30px;
-                font-size: 1.1rem;
-            }
-        </style>
-    </head>
-    <body>
-        <nav class="navbar">
-            <div class="logo">La trobada</div>
-            <div class="nav-links">
-                    <form action="/foro">
-                        <input type="submit" value="Foro">
-                    </form>
-                    <form action="/escaner">
-                        <input type="submit" value="Escaner">
-                    </form>
-                    <form action="/colleccio">
-                        <input type="submit" value="Col·lecció">
-                    </form>
-                    <form action="/xat">
-                        <input type="submit" value="Xat">
-                    </form>
+    <main class="main-content">
+        <h1 class="forum-title">Fòrum de La Trobada</h1>
+        <p class="forum-subtitle">Comparteix les teves experiències i pregunta als altres usuaris</p>
+        
+        {% if error %}
+        <div class="alert error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="forum-container">
+            {% for post in posts %}
+            <div class="forum-post">
+                <div class="post-header">
+                    <div class="user-avatar">{{ post.user_initial }}</div>
+                    <span class="username">@{{ post.username }}</span>
+                    <span class="post-time">{{ post.timestamp }}</span>
+                </div>
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn">Respondre</button>
+                    <button class="action-btn">M'agrada</button>
+                    <button class="action-btn">Compartir</button>
+                </div>
             </div>
-            <div class="user-section">
-                <div class="user-icon">U</div>
-                <form action="/usuari">
-                    <input type="submit" value="Usuari">
+            {% else %}
+            <p class="no-posts">Encara no hi ha posts al fòrum. Sigues el primer a publicar!</p>
+            {% endfor %}
+        </div>
+        
+        <button class="new-post" id="newPostBtn">+ Nou Post</button>
+        
+        <!-- Modal para nuevo post -->
+        <div class="modal" id="postModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Nou Post</h2>
+                <form id="postForm">
+                    <textarea name="content" placeholder="Què vols compartir?" required></textarea>
+                    <button type="submit">Publicar</button>
                 </form>
             </div>
-        </nav>
+        </div>
+    </main>
 
-        <!-- Contenido principal del foro -->
-        <main class="main-content">
-            <h1 class="forum-title">Fòrum de La Trobada</h1>
-            <p class="forum-subtitle">Comparteix les teves experiències i pregunta als altres usuaris</p>
+    <script>
+        // Mostrar/ocultar modal
+        const modal = document.getElementById("postModal");
+        const btn = document.getElementById("newPostBtn");
+        const span = document.getElementsByClassName("close")[0];
+        
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Enviar formulario
+        document.getElementById("postForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
             
-            <div class="forum-container">
-                <!-- Post 1 -->
-                <div class="forum-post">
-                    <div class="post-header">
-                        <div class="user-avatar">U</div>
-                        <span class="username">@UsuarioX</span>
-                    </div>
-                    <div class="post-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn">Respondre</button>
-                        <button class="action-btn">M'agrada</button>
-                        <button class="action-btn">Compartir</button>
-                    </div>
-                </div>
-                
-                <!-- Post 2 -->
-                <div class="forum-post">
-                    <div class="post-header">
-                        <div class="user-avatar">U</div>
-                        <span class="username">@UsuarioX</span>
-                    </div>
-                    <div class="post-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl.</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn">Respondre</button>
-                        <button class="action-btn">M'agrada</button>
-                        <button class="action-btn">Compartir</button>
-                    </div>
-                </div>
-                
-                <!-- Post 3 -->
-                <div class="forum-post">
-                    <div class="post-header">
-                        <div class="user-avatar">U</div>
-                        <span class="username">@UsuarioX</span>
-                    </div>
-                    <div class="post-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt.</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn">Respondre</button>
-                        <button class="action-btn">M'agrada</button>
-                        <button class="action-btn">Compartir</button>
-                    </div>
-                </div>
-            </div>
+            const formData = new FormData(this);
             
-            <button class="new-post">+ Nou Post</button>
-        </main>
-    </body>
+            try {
+                const response = await fetch("/crear_post", {
+                    method: "POST",
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === "success") {
+                    alert("Post creat correctament!");
+                    window.location.reload();  // Recargar la página para mostrar los nuevos mensajes
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        });
+    </script>
+</body>
 </html>
