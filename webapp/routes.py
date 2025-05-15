@@ -8,6 +8,7 @@ IP_API = "10.100.3.25:5000"
 # Creació d'un Blueprint
 routes = Blueprint('routes', __name__)
 
+# Funció per obtenir l'ID d'un usuari
 def get_user_id(user):
     try:
         url = f"http://{IP_API}/api/usuario/id/{user}"
@@ -22,7 +23,7 @@ def get_user_id(user):
         print(f"Error: {str(e)}")
         return None
 
-# Ruta principal
+# Ruta principal (obre el login)
 @routes.route('/')
 def home():
     return render_template('login.html')
@@ -49,7 +50,7 @@ def login():
             if response.status_code == 200:
                 # Guardar usuari a la sessió i redirigir al fòrum
                 session['user'] = username
-                return render_template('foro.html')
+                return redirect(url_for('routes.foro'))  # Canvia aquesta línia
             else:
                 # Si hi ha error, mostrar missatge d'error
                 return jsonify({
@@ -115,8 +116,9 @@ def foro():
             processed_posts = []
             for post in posts:
                 processed = {
-                    'nom_usuari': post.get('username'),
-                    'missatge': post.get('missatge'),
+                    'user_initial': post.get('nom_usuari', 'U')[0].upper(),
+                    'username': post.get('nom_usuari', 'Usuario'),
+                    'content': post.get('mensaje', ''),
                 }
                 processed_posts.append(processed)
             
@@ -160,6 +162,7 @@ def crear_post():
 def escaner():
     return render_template('escaner.html')
 
+# Ruta per escanejar una carta
 @routes.route('/carta/web', methods=['GET', 'POST'])
 def carta_web():
     try:
@@ -190,6 +193,7 @@ def carta_web():
     except Exception as e:
         return render_template('escaner.html', error=f"Error inesperat: {str(e)}")
 
+# Ruta per afegir una carta a una col·lecció
 @routes.route('/afegir_carta_colleccio', methods=['POST'])
 def afegir_carta_colleccio():
     try:
@@ -222,6 +226,7 @@ def afegir_carta_colleccio():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
 
+# Ruta per obtenir les col·leccions de l'usuari
 @routes.route('/obtenir_colleccions')
 def obtenir_colleccions():
     try:
@@ -416,6 +421,7 @@ def veure_colleccio(colleccio_id):
 def xat():
     return render_template('xat.html')
 
+# Ruta per obtenir els contactes
 @routes.route('/api/xat/contactes')
 def obtener_contactes():
     try:
@@ -442,6 +448,7 @@ def obtener_contactes():
     except Exception as e:
         print(f"Error: {str(e)}")
 
+# Ruta per buscar usuaris
 @routes.route('/buscar_usuarios', methods=['GET'])
 def buscar_usuarios():
     try:
@@ -459,6 +466,7 @@ def buscar_usuarios():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500 
 
+# Ruta per crear una nova conversa
 @routes.route('/crear_conversacion', methods=['POST'])
 def crear_conversacion():
     try:
@@ -489,6 +497,7 @@ def crear_conversacion():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+# Ruta per obtenir una conversa específica
 @routes.route('/obtener_conversacion/<string:conversacion_id>', methods=['GET'])
 def obtener_conversacion(conversacion_id):
     try:
@@ -518,6 +527,7 @@ def obtener_conversacion(conversacion_id):
         print(f"Error: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+# Ruta per obtenir l'usuari actual
 @routes.route('/usuario_actual')
 def usuario_actual():
     id = get_user_id(session['user'])
@@ -526,6 +536,7 @@ def usuario_actual():
             # si también lo guardaste
         })
 
+# Ruta per enviar un missatge
 @routes.route('/enviar_mensaje', methods=['POST'])
 def enviar_mensaje():
     try:
@@ -635,4 +646,3 @@ def canviar_nom():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': f"S'ha produït un error: {str(e)}"}), 500
-
