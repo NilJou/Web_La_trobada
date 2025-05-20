@@ -162,7 +162,7 @@ def crear_post():
 def escaner():
     return render_template('escaner.html')
 
-# Ruta per escanejar una carta
+# Ruta per buscar cartes
 @routes.route('/carta/web', methods=['GET', 'POST'])
 def carta_web():
     try:
@@ -182,7 +182,13 @@ def carta_web():
                 if not cartes:
                     return render_template('escaner.html', nom_buscat=nom, error="No s'han trobat cartes")
                 
-                return render_template('escaner.html', nom_buscat=nom, cartes=cartes)
+                # Filtrar cartas sin imagen
+                cartes_con_imagen = [carta for carta in cartes if carta.get('imatge')]
+                
+                if not cartes_con_imagen:
+                    return render_template('escaner.html', nom_buscat=nom, error="S'han trobat cartes però cap amb imatge disponible")
+                
+                return render_template('escaner.html', nom_buscat=nom, cartes=cartes_con_imagen)
             else:
                 error_msg = response.json().get('error', 'Error en la cerca de cartes')
                 return render_template('escaner.html', error=error_msg)

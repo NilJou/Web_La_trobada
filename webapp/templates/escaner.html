@@ -162,24 +162,26 @@
                 <div class="cartes-container">
                     <!-- Bucle per mostrar cada carta -->
                     {% for carta in cartes %}
-                    <div class="carta" data-carta-id="{{ carta.id }}">
-                        <!-- Imatge de la carta, amb fallback per si no pot carregarla -->
-                        <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
-                             onerror="this.onerror=null;this.src='{{ url_for('static', filename='placeholder.jpg') }}'">
-                        
-                        <!-- Informacio de la carta -->
-                        <div class="carta-info">
-                            <!-- Nom de la carta -->
-                            <h3>{{ carta.nom }}</h3>
-                            <!-- Expansio de la carta -->
-                            <p>Expansió: {{ carta.expansio }}</p> 
+                        {% if carta.imatge %}
+                        <div class="carta" data-carta-id="{{ carta.id }}">
+                            <!-- Imatge de la carta -->
+                            <img src="{{ carta.imatge }}" alt="{{ carta.nom }}" 
+                                 onerror="this.parentElement.style.display='none'">
                             
-                            <!-- Botó per afegir a la col·lecció seleccionada -->
-                            <button type="button" onclick="afegirAColleccio('{{ carta.id }}')" class="btn-afegir">
-                                Afegir a col·lecció
-                            </button>
+                            <!-- Informacio de la carta -->
+                            <div class="carta-info">
+                                <!-- Nom de la carta -->
+                                <h3>{{ carta.nom }}</h3>
+                                <!-- Expansio de la carta -->
+                                <p>Expansió: {{ carta.expansio }}</p> 
+                                
+                                <!-- Botó per afegir a la col·lecció seleccionada -->
+                                <button type="button" onclick="afegirAColleccio('{{ carta.id }}')" class="btn-afegir">
+                                    Afegir a col·lecció
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
