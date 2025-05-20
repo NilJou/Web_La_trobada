@@ -1,88 +1,54 @@
 <!DOCTYPE html>
-<!-- Declaració del tipus de document HTML5 -->
 <html lang="ca">
-<!-- Etiqueta arrel del document, especifica que l'idioma és català -->
-
-<!-- Capçalera del document - conté metadades i enllaços a recursos -->
 <head>
-    <!-- Especifica la codificació de caràcters com a UTF-8 (suporta caràcters especials) -->
     <meta charset="UTF-8">
-    <!-- Configura la vista per a dispositius mòbils (disseny responsive) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Títol que apareix a la pestanya del navegador -->
     <title>Detall de la Col·lecció</title>
-    <!-- Enllaç a la fulla d'estils CSS ubicada a la carpeta static -->
     <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='colleccio_detall_style.css') }}">
 </head>
 
-<!-- Cos del document - tot el contingut visible -->
 <body>
-    
-    <!-- Barra de navegació -->
     <nav class="navbar">
-        <!-- Logo/Marca del lloc -->
         <div class="logo">La trobada</div> 
         
-        <!-- Enllaços de navegació principals -->
         <div class="nav-links">
-            <!-- Cada enllaç és un formulari que redirigeix a diferents seccions -->
             <form action="/foro"><input type="submit" value="Foro"></form>
             <form action="/escaner"><input type="submit" value="Escaner"></form>
             <form action="/colleccio"><input type="submit" value="Col·lecció"></form>
             <form action="/xat"><input type="submit" value="Xat"></form>
         </div>
         
-        <!-- Secció d'usuari -->
         <div class="user-section">
-            <div class="user-icon">U</div> <!-- Icona/avatar de l'usuari -->
-            <form action="/usuari"><input type="submit" value="Usuari"></form> <!-- Enllaç al perfil -->
+            <div class="user-icon">U</div>
+            <form action="/usuari"><input type="submit" value="Usuari"></form>
         </div>
     </nav>
 
-    <!-- Contingut principal de la pàgina -->
     <main class="main-content">
-        <!-- Verifica si existeix la variable 'colleccio' -->
         {% if colleccio %}
-            <!-- Capçalera de la col·lecció -->
             <div class="carta-header">
-                <h1>{{ colleccio.nom }}</h1> <!-- Mostra el nom de la col·lecció -->
-                <span>{{ colleccio.quantitat }} cartes</span> <!-- Mostra la quantitat de cartes -->
+                <h1>{{ colleccio.nom }}</h1>
+                <span>{{ colleccio.quantitat }} cartes</span>
             </div>
 
-            <!-- Missatges d'èxit/error (condicionals) -->
             {% if success %}
-                <div class="alert success">{{ success }}</div> <!-- Missatge d'èxit -->
+                <div class="alert success">{{ success }}</div>
             {% endif %}
             {% if error %}
-                <div class="alert error">{{ error }}</div> <!-- Missatge d'error -->
+                <div class="alert error">{{ error }}</div>
             {% endif %}
 
-            <!-- Verifica si hi ha cartes a la col·lecció -->
             {% if cartes %}
-                <!-- Grid per mostrar les cartes -->
                 <div class="carta-grid">
-                    <!-- Bucle per a cada carta de la col·lecció -->
                     {% for carta in cartes %}
-                        <!-- Targeta individual per a cada carta -->
                         <div class="carta-card">
-                            <!-- Imatge de la carta -->
                             <img src="{{ carta.imatge_url }}" alt="Imatge carta" class="carta-image">
-                            
-                            <!-- Contingut descriptiu de la carta -->
-                            <div class="carta-content">
-                                <div class="carta-title">{{ carta.nom }}</div> <!-- Nom de la carta -->
-                                <div class="carta-meta">
-                                    <span>{{ carta.raresa }}</span> <!-- Raresa de la carta -->
-                                    <span>{{ carta.data_afegit }}</span> <!-- Data d'afegiment -->
-                                </div>
-                                <p class="carta-description">{{ carta.descripcio }}</p> <!-- Descripció -->
-                            </div>
+                            <h3 class="carta-title">{{ carta.nom }}</h3>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <!-- Missatge que apareix quan no hi ha cartes a la col·lecció -->
                 <div class="empty-cards">
                     <img src="{{ url_for('static', filename='images/empty-collection.svg') }}" alt="Cap carta">
                     <h3>Encara no hi ha cartes en aquesta col·lecció</h3>
@@ -90,11 +56,9 @@
                 </div>
             {% endif %}
         {% else %}
-            <!-- Missatge que apareix quan no es pot carregar la col·lecció -->
             <div class="alert error">No s'ha pogut carregar la col·lecció.</div>
         {% endif %}
 
-        <!-- Enllaç per tornar a la pàgina de col·leccions -->
         <a href="/colleccio" class="back-link">← Tornar a les col·leccions</a>
     </main>
 </body>

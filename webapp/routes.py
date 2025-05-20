@@ -373,14 +373,13 @@ def eliminar_colleccio(colleccio_id):
 @routes.route('/colleccio/<int:colleccio_id>')
 def veure_colleccio(colleccio_id):
     try:
-        # Verificar si hi ha un usuari a la sessió
         usuari_actual = session.get("user")
         if not usuari_actual:
             return redirect(url_for('routes.login'))
 
         headers = {'Content-Type': 'application/json'}
 
-        # Obtenir les cartes de la col·lecció des de l'API
+        # Obtenir les cartes de la col·lecció
         url_cartes = f"http://{IP_API}/api/carta/coleccio/mostrar"
         payload_cartes = {
             "usr": usuari_actual,
@@ -389,38 +388,44 @@ def veure_colleccio(colleccio_id):
 
         response_cartes = requests.get(url_cartes, headers=headers, json=payload_cartes)
 
-        # Si la resposta és exitosa
         if response_cartes.status_code == 200:
             cartes = response_cartes.json()
-            # Assegurar-se que cartes sigui una llista
-            if not isinstance(cartes, list):
-                cartes = [cartes] if isinstance(cartes, dict) else []
-
-            # Processar les cartes per a la vista
+            
+            # Processar les cartes amb els noms de camps correctes
             processed_cartes = []
             for carta in cartes:
+                print(carta)
                 processed = {
-                    'id': carta.get('id'),
+                    'id': carta.get('id_carta'),
                     'nom': carta.get('nom', "Sense nom"),
-                    'imatge_url': carta.get('imatge_url')
+                    'imatge_url': carta.get('imatge'),
+                    'expansio': carta.get('expansio', "Desconeguda"),  # Nuevo campo
+                    'raresa': carta.get('raresa', "Comú"),
+                    'data_afegit': carta.get('data_afegit', "Data desconeguda")
                 }
                 processed_cartes.append(processed)
 
-            # Crear objecte de col·lecció processada per a la vista
+            # Crear objecte de col·lecció
             colleccio_procesada = {
                 'id': colleccio_id,
                 'nom': f"Col·lecció {colleccio_id}",
                 'quantitat': len(processed_cartes)
             }
 
-            return render_template('colleccio_detall.html', colleccio=colleccio_procesada, cartes=processed_cartes)
+            return render_template('colleccio_detall.html', 
+                                colleccio=colleccio_procesada, 
+                                cartes=processed_cartes)
         else:
-            # Gestionar error en obtenir les cartes
-            error_msg = response_cartes.json().get('error', "Error en obtenir les cartes de la col·lecció")
-            return render_template('colleccio_detall.html', error=error_msg, colleccio=None, cartes=[])
+            error_msg = response_cartes.json().get('error', "Error en obtenir les cartes")
+            return render_template('colleccio_detall.html', 
+                                 error=error_msg, 
+                                 colleccio=None, 
+                                 cartes=[])
     except Exception as e:
-        # Gestió d'errors inesperats
-        return render_template('colleccio_detall.html', error=f"Error inesperat: {str(e)}", colleccio=None, cartes=[])
+        return render_template('colleccio_detall.html', 
+                             error=f"Error inesperat: {str(e)}", 
+                             colleccio=None, 
+                             cartes=[])
 
 # Ruta per al xat
 @routes.route('/xat')
