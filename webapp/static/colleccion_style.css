@@ -1,214 +1,116 @@
-/* Estilos base */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
-
-/* Barra de navegación */
-.navbar {
+/* Estilo tipo foro/feed */
+.colleccions-feed {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #6750a4;
-}
-
-.nav-links {
-    display: flex;
+    flex-direction: column;
     gap: 20px;
-}
-
-.user-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* Contenido principal */
-.main-content {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
-}
-
-/* Cabecera de la colección */
-.carta-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e1e1e1;
-}
-
-.carta-header h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #333;
-}
-
-.carta-header span {
-    font-size: 1rem;
-    color: #666;
-    background-color: #e9ecef;
-    padding: 5px 10px;
-    border-radius: 20px;
-}
-
-/* Grid de cartas */
-.carta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
     margin-top: 20px;
 }
 
-/* Tarjeta individual de carta */
-.carta-card {
+.colleccio-post {
     background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #eaeaea;
 }
 
-.carta-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-}
-
-/* Imagen de la carta */
-.carta-image {
-    width: 100%;
-    height: 200px;
-    object-fit: contain;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #eee;
-    padding: 10px;
-}
-
-/* Nombre de la carta */
-.carta-title {
-    margin: 0;
-    padding: 15px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-align: center;
-    color: #333;
-    line-height: 1.3;
-}
-
-/* Mensajes de alerta */
-.alert {
-    padding: 12px 20px;
-    margin-bottom: 25px;
-    border-radius: 5px;
-    font-size: 0.95rem;
-}
-
-.alert.error {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef9a9a;
-}
-
-.alert.success {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #a5d6a7;
-}
-
-/* Colección vacía */
-.empty-cards {
-    text-align: center;
-    padding: 50px 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin: 30px 0;
-}
-
-.empty-cards img {
-    max-width: 180px;
-    margin-bottom: 25px;
-    opacity: 0.6;
-}
-
-.empty-cards h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.3rem;
-    color: #444;
-}
-
-.empty-cards p {
-    margin: 0;
-    color: #666;
-    font-size: 0.95rem;
-}
-
-/* Enlace para volver */
-.back-link {
-    display: inline-flex;
+.post-header {
+    display: flex;
     align-items: center;
-    margin-top: 30px;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #6750a4;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-weight: 600;
+    color: #333;
+}
+
+.post-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.post-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.collection-stats {
+    margin-top: 10px;
+}
+
+.card-count {
+    background-color: #f3f0ff;
     color: #6750a4;
-    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
     font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.3s;
 }
 
-.back-link:hover {
-    color: #8561c5;
-    text-decoration: underline;
+.post-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
 }
 
-.back-link::before {
-    content: "←";
-    margin-right: 5px;
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.delete-btn:hover {
+    background-color: #ffebee;
+    color: #d32f2f;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .carta-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-    }
-    
-    .navbar {
+    .colleccio-post {
         padding: 15px;
-        flex-direction: column;
-        gap: 15px;
     }
     
-    .nav-links {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .main-content {
-        padding: 0 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .carta-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .carta-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    .post-actions {
+        flex-wrap: wrap;
     }
 }

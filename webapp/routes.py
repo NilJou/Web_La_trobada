@@ -111,7 +111,6 @@ def foro():
        
         if response.status_code == 200:
             posts = response.json()
-            print(posts)
             # Procesar los posts para incluir toda la información necesaria
             processed_posts = []
             for post in posts:
@@ -179,6 +178,7 @@ def carta_web():
             
             if response.status_code == 200:
                 cartes = response.json()
+                print(cartes)
                 if not cartes:
                     return render_template('escaner.html', nom_buscat=nom, error="No s'han trobat cartes")
                 
@@ -248,7 +248,7 @@ def obtenir_colleccions():
         
         if response.status_code == 200:
             colleccions = response.json()
-            
+            print(colleccions)
             if not isinstance(colleccions, list):
                 colleccions = [colleccions] if isinstance(colleccions, dict) else []
             
@@ -394,7 +394,6 @@ def veure_colleccio(colleccio_id):
             # Processar les cartes amb els noms de camps correctes
             processed_cartes = []
             for carta in cartes:
-                print(carta)
                 processed = {
                     'id': carta.get('id_carta'),
                     'nom': carta.get('nom', "Sense nom"),
@@ -498,7 +497,6 @@ def crear_conversacion():
         }
         
         response = requests.post(url, json=payload, headers=headers)
-        print(response)
         if response.status_code in [200, 201]:
             return jsonify(response.json())
         else:

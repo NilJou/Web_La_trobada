@@ -46,7 +46,7 @@
                 <div class="post-header">
                     <div class="user-avatar">{{ post.user_initial }}</div>
                     <span class="username">@{{ post.username }}</span>
-                    <span class="post-time">{{ post.timestamp }}</span>
+                    <span class="post-timestamp">{{ post.timestamp }}</span>
                 </div>
                 <div class="post-content">
                     <p>{{ post.content }}</p>
@@ -65,13 +65,15 @@
         <button class="new-post" id="newPostBtn">+ Nou Post</button>
         
         <!-- Modal para nuevo post -->
-        <div class="modal" id="postModal">
+        <div class="post-modal" id="postModal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Nou Post</h2>
-                <form id="postForm">
-                    <textarea name="content" placeholder="Què vols compartir?" required></textarea>
-                    <button type="submit">Publicar</button>
+                <div class="modal-header">
+                    <h2 class="modal-title">Nou Post</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form class="post-form" id="postForm">
+                    <input type="text" class="post-input" name="content" placeholder="Què vols compartir?" required>
+                    <button type="submit" class="post-submit">Publicar</button>
                 </form>
             </div>
         </div>
@@ -81,13 +83,13 @@
         // Mostrar/ocultar modal
         const modal = document.getElementById("postModal");
         const btn = document.getElementById("newPostBtn");
-        const span = document.getElementsByClassName("close")[0];
+        const closeBtn = document.querySelector(".close-modal");
         
         btn.onclick = function() {
-            modal.style.display = "block";
+            modal.style.display = "flex";
         }
         
-        span.onclick = function() {
+        closeBtn.onclick = function() {
             modal.style.display = "none";
         }
         
@@ -113,7 +115,7 @@
                 
                 if (data.status === "success") {
                     alert("Post creat correctament!");
-                    window.location.reload();  // Recargar la página para mostrar los nuevos mensajes
+                    window.location.reload();
                 } else {
                     alert("Error: " + data.message);
                 }
