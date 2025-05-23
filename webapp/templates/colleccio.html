@@ -1,129 +1,109 @@
 <!DOCTYPE html>
 <html lang="ca">
-    <head>
-        <!-- Configuració del document HTML -->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>La teva col·lecció - La trobada</title>
-        
-        <!-- Enllaç a l'arxiu CSS -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='colleccio_style.css') }}">
-        
-        <!-- Script per l'eliminació de col·leccions -->
-        <script>
-            function eliminarColleccio(colleccioId) {
-                // Demanar confirmació abans d'eliminar
-                if (confirm("Estàs segur que vols eliminar aquesta col·lecció i totes les seves cartes?")) {
-                    // Fer una petició POST a l'endpoint d'eliminació
-                    fetch(`/eliminar_colleccio/${colleccioId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({colleccio_id: colleccioId})
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            // Mostrar missatge d'èxit i recarregar la pàgina
-                            alert(data.message);
-                            location.reload();
-                        } else {
-                            // Mostrar missatge d'error
-                            alert(data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("S'ha produït un error en eliminar la col·lecció");
-                    });
-                }
-            }
-        </script>
-    </head>
-    <body>
-        <!-- Barra de navegació superior -->
-        <nav class="navbar">
-            <div class="logo">La trobada</div>
-            
-            <!-- Enllaços de navegació -->
-            <div class="nav-links">
-                <form action="/foro"><input type="submit" value="Foro"></form>
-                <form action="/escaner"><input type="submit" value="Escaner"></form>
-                <form action="/colleccio"><input type="submit" value="Col·lecció"></form>
-                <form action="/xat"><input type="submit" value="Xat"></form>
-            </div>
-            
-            <!-- Secció d'usuari -->
-            <div class="user-section">
-                <div class="user-icon">U</div>
-                <form action="/usuari"><input type="submit" value="Usuari"></form>
-            </div>
-        </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La teva col·lecció - La trobada</title>
 
-        <!-- Contingut principal de la pàgina -->
-        <main class="main-content">
-            <!-- Capçalera amb títol i estadístiques -->
-            <div class="header-container">
-                <h1>La teva col·lecció</h1>
-                <div class="stats-badge">
-                    <span>{{ colleccions|length if colleccions else 0 }}</span> col·leccions
-                </div>
+    <!-- Estils -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colleccion_style.css') }}">
+
+    <!-- Script per eliminar col·leccions -->
+    <script>
+        function eliminarColleccio(colleccioId) {
+            if (confirm("Estàs segur que vols eliminar aquesta col·lecció i totes les seves cartes?")) {
+                fetch(`/eliminar_colleccio/${colleccioId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({colleccio_id: colleccioId})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("S'ha produït un error en eliminar la col·lecció");
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Barra de navegació -->
+    <nav class="navbar">
+        <div class="logo">La trobada</div>
+        <div class="nav-links">
+            <form action="/foro"><input type="submit" value="Foro"></form>
+            <form action="/escaner"><input type="submit" value="Escaner"></form>
+            <form action="/colleccio"><input type="submit" value="Col·lecció"></form>
+            <form action="/xat"><input type="submit" value="Xat"></form>
+        </div>
+        <div class="user-section">
+            <div class="user-icon">U</div>
+            <form action="/usuari"><input type="submit" value="Usuari"></form>
+        </div>
+    </nav>
+
+    <!-- Contingut principal -->
+    <main class="main-content">
+        <div class="header-container">
+            <h1>La teva col·lecció</h1>
+            <div class="stats-badge">
+                <span>{{ colleccions|length if colleccions else 0 }}</span> col·leccions
             </div>
-            
-            <!-- Missatges d'error o èxit -->
-            {% if error %}
-                <div class="alert error">{{ error }}</div>
-            {% endif %}
-            {% if success %}
-                <div class="alert success">{{ success }}</div>
-            {% endif %}
-            
-            <!-- Formulari per crear nova col·lecció -->
-            <form action="/crear_colleccio" method="POST" class="crear-colleccio-form">
-                <input type="text" name="nom_colleccio" placeholder="Nom de la nova col·lecció" required>
-                <button type="submit" class="btn-primary">
-                    <span class="icon">+</span> Crear Col·lecció
-                </button>
-            </form>
-            
-            <!-- Llista de col·leccions existents -->
-            {% if colleccions %}
-            <div class="colleccions-container">
-                <h2>Les teves col·leccions</h2>
-                <div class="colleccions-grid">
-                    {% for colleccio in colleccions %}
-                    <div class="colleccio-card">
-                        <div class="colleccio-header">
-                            <div class="colleccio-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="currentColor" d="M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V5H19V19M17,17H7V7H17V17Z" />
-                                </svg>
-                            </div>
-                            <h3>{{ colleccio.nom }}</h3>
-                        </div>
-                        <p>Creada el {{ colleccio.data_creacio|default('data desconeguda') }}</p>
-                        <div class="colleccio-footer">
-                            <span class="colleccio-id">{{ colleccio.quantitat }} {{ 'cartes' if colleccio.quantitat != 1 else 'carta' }}</span>
-                            <button class="delete-btn" onclick="eliminarColleccio({{ colleccio.id }})" title="Eliminar col·lecció">
-                                <svg viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% else %}
-            <!-- Missatge quan no hi ha col·leccions -->
-            <div class="empty-state">
-                <img src="{{ url_for('static', filename='images/empty-collection.svg') }}" alt="Col·lecció buida" class="empty-image">
-                <h3>Encara no tens cap col·lecció creada</h3>
-                <p>Crea la teva primera col·lecció per començar a afegir cartes</p>
-            </div>
-            {% endif %}
-        </main>
-    </body>
+        </div>
+
+        {% if error %}
+            <div class="alert error">{{ error }}</div>
+        {% endif %}
+        {% if success %}
+            <div class="alert success">{{ success }}</div>
+        {% endif %}
+
+        <!-- Crear nova col·lecció -->
+        <form action="/crear_colleccio" method="POST" class="crear-colleccio-form">
+            <input type="text" name="nom_colleccio" placeholder="Nom de la nova col·lecció" required>
+            <button type="submit" class="btn-primary">
+                <span class="icon">+</span> Crear Col·lecció
+            </button>
+        </form>
+
+        <!-- Col·leccions existents -->
+<!-- Llista de col·leccions existents -->
+{% if colleccions %}
+<div class="colleccions-container">
+    <h2>Les teves col·leccions</h2>
+    <div class="colleccions-grid">
+    {% for colleccio in colleccions %}
+    <div class="colleccio-card" onclick="window.location.href='{{ url_for('routes.veure_colleccio', colleccio_id=colleccio.id) }}'" style="cursor:pointer;">
+        <button class="delete-btn" onclick="eliminarColleccio({{ colleccio.id }})" title="Eliminar col·lecció">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+            </svg>
+        </button>
+        {{ colleccio.nom }}
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% else %}
+<!-- Missatge quan no hi ha col·leccions -->
+<div class="empty-state">
+    <img src="{{ url_for('static', filename='images/empty-collection.svg') }}" alt="Col·lecció buida" class="empty-image">
+    <h3>Encara no tens cap col·lecció creada</h3>
+    <p>Crea la teva primera col·lecció per començar a afegir cartes</p>
+</div>
+{% endif %}
+
+    </main>
+</body>
 </html>
