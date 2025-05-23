@@ -1,79 +1,79 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="ca"> <!-- Defineix l'idioma del document com a català -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La trobada - Foro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='foro_style.css') }}">
+    <meta charset="UTF-8"> <!-- Estableix la codificació de caràcters -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura la vista per a dispositius mòbils -->
+    <title>La trobada - Foro</title> <!-- Títol de la pàgina -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}"> <!-- Enllaç a l'estil base -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='foro_style.css') }}"> <!-- Enllaç a l'estil específic per al fòrum -->
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">La trobada</div>
-        <div class="nav-links">
+    <nav class="navbar"> <!-- Barra de navegació -->
+        <div class="logo">La trobada</div> <!-- Logo de la pàgina -->
+        <div class="nav-links"> <!-- Enllaços de navegació -->
             <form action="/foro">
-                <input type="submit" value="Foro">
+                <input type="submit" value="Foro"> <!-- Enllaç al fòrum -->
             </form>
             <form action="/escaner">
-                <input type="submit" value="Escaner">
+                <input type="submit" value="Escaner"> <!-- Enllaç a l'escaner -->
             </form>
             <form action="/colleccio">
-                <input type="submit" value="Col·lecció">
+                <input type="submit" value="Col·lecció"> <!-- Enllaç a la col·lecció -->
             </form>
             <form action="/xat">
-                <input type="submit" value="Xat">
+                <input type="submit" value="Xat"> <!-- Enllaç al xat -->
             </form>
         </div>
-        <div class="user-section">
-            <div class="user-icon">{{ session['user'][0]|upper if 'user' in session else 'U' }}</div>
+        <div class="user-section"> <!-- Secció d'usuari -->
+            <div class="user-icon">{{ session['user'][0]|upper if 'user' in session else 'U' }}</div> <!-- Icona d'usuari, mostra inicial de l'usuari -->
             <form action="/usuari">
-                <input type="submit" value="Usuari">
+                <input type="submit" value="Usuari"> <!-- Enllaç a la pàgina d'usuari -->
             </form>
         </div>
     </nav>
 
-    <main class="main-content">
-        <h1 class="forum-title">Fòrum de La Trobada</h1>
-        <p class="forum-subtitle">Comparteix les teves experiències i pregunta als altres usuaris</p>
+    <main class="main-content"> <!-- Contingut principal de la pàgina -->
+        <h1 class="forum-title">Fòrum de La Trobada</h1> <!-- Títol del fòrum -->
+        <p class="forum-subtitle">Comparteix les teves experiències i pregunta als altres usuaris</p> <!-- Subtítol informatiu -->
         
-        {% if error %}
-        <div class="alert error">{{ error }}</div>
+        {% if error %} <!-- Comprova si hi ha un missatge d'error -->
+        <div class="alert error">{{ error }}</div> <!-- Mostra el missatge d'error -->
         {% endif %}
         
-        <div class="forum-container">
-            {% for post in posts %}
-            <div class="forum-post">
-                <div class="post-header">
-                    <div class="user-avatar">{{ post.user_initial }}</div>
-                    <span class="username">@{{ post.username }}</span>
-                    <span class="post-timestamp">{{ post.timestamp }}</span>
+        <div class="forum-container"> <!-- Contenidor per als posts del fòrum -->
+            {% for post in posts %} <!-- Itera sobre els posts -->
+            <div class="forum-post"> <!-- Cada post del fòrum -->
+                <div class="post-header"> <!-- Capçalera del post -->
+                    <div class="user-avatar">{{ post.user_initial }}</div> <!-- Avatar de l'usuari -->
+                    <span class="username">@{{ post.username }}</span> <!-- Nom d'usuari -->
+                    <span class="post-timestamp">{{ post.timestamp }}</span> <!-- Data i hora del post -->
                 </div>
-                <div class="post-content">
-                    <p>{{ post.content }}</p>
+                <div class="post-content"> <!-- Contingut del post -->
+                    <p>{{ post.content }}</p> <!-- Text del post -->
                 </div>
-                <div class="post-actions">
-                    <button class="action-btn">Respondre</button>
-                    <button class="action-btn">M'agrada</button>
-                    <button class="action-btn">Compartir</button>
+                <div class="post-actions"> <!-- Accions disponibles per al post -->
+                    <button class="action-btn">Respondre</button> <!-- Botó per respondre -->
+                    <button class="action-btn">M'agrada</button> <!-- Botó per marcar com a m'agrada -->
+                    <button class="action-btn">Compartir</button> <!-- Botó per compartir -->
                 </div>
             </div>
-            {% else %}
-            <p class="no-posts">Encara no hi ha posts al fòrum. Sigues el primer a publicar!</p>
+            {% else %} <!-- Si no hi ha posts -->
+            <p class="no-posts">Encara no hi ha posts al fòrum. Sigues el primer a publicar!</p> <!-- Missatge informatiu -->
             {% endfor %}
         </div>
         
-        <button class="new-post" id="newPostBtn">+ Nou Post</button>
+        <button class="new-post" id="newPostBtn">+ Nou Post</button> <!-- Botó per crear un nou post -->
         
-        <!-- Modal para nuevo post -->
-        <div class="post-modal" id="postModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Nou Post</h2>
-                    <button class="close-modal">&times;</button>
+        <!-- Modal per a nou post -->
+        <div class="post-modal" id="postModal"> <!-- Contenidor del modal -->
+            <div class="modal-content"> <!-- Contingut del modal -->
+                <div class="modal-header"> <!-- Capçalera del modal -->
+                    <h2 class="modal-title">Nou Post</h2> <!-- Títol del modal -->
+                    <button class="close-modal">&times;</button> <!-- Botó per tancar el modal -->
                 </div>
-                <form class="post-form" id="postForm">
-                    <input type="text" class="post-input" name="content" placeholder="Què vols compartir?" required>
-                    <button type="submit" class="post-submit">Publicar</button>
+                <form class="post-form" id="postForm"> <!-- Formulari per crear un nou post -->
+                    <input type="text" class="post-input" name="content" placeholder="Què vols compartir?" required> <!-- Input per al contingut del post -->
+                    <button type="submit" class="post-submit">Publicar</button> <!-- Botó per publicar el post -->
                 </form>
             </div>
         </div>
@@ -81,46 +81,46 @@
 
     <script>
         // Mostrar/ocultar modal
-        const modal = document.getElementById("postModal");
-        const btn = document.getElementById("newPostBtn");
-        const closeBtn = document.querySelector(".close-modal");
+        const modal = document.getElementById("postModal"); // Obté el modal
+        const btn = document.getElementById("newPostBtn"); // Obté el botó per crear un nou post
+        const closeBtn = document.querySelector(".close-modal"); // Obté el botó de tancament del modal
         
-        btn.onclick = function() {
-            modal.style.display = "flex";
+        btn.onclick = function() { // Funció per mostrar el modal
+            modal.style.display = "flex"; // Mostra el modal
         }
         
-        closeBtn.onclick = function() {
-            modal.style.display = "none";
+        closeBtn.onclick = function() { // Funció per tancar el modal
+            modal.style.display = "none"; // Amaga el modal
         }
         
-        window.onclick = function(event) {
+        window.onclick = function(event) { // Funció per tancar el modal si es fa clic fora d'ell
             if (event.target == modal) {
-                modal.style.display = "none";
+                modal.style.display = "none"; // Amaga el modal
             }
         }
         
-        // Enviar formulario
-        document.getElementById("postForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
+        // Enviar formulari
+        document.getElementById("postForm").addEventListener("submit", async function(e) { // Afegir esdeveniment al formulari
+            e.preventDefault(); // Evita el comportament per defecte del formulari
             
-            const formData = new FormData(this);
+            const formData = new FormData(this); // Obté les dades del formulari
             
             try {
-                const response = await fetch("/crear_post", {
+                const response = await fetch("/crear_post", { // Envia les dades al servidor
                     method: "POST",
                     body: formData
                 });
                 
-                const data = await response.json();
+                const data = await response.json(); // Converteix la resposta a JSON
                 
-                if (data.status === "success") {
-                    alert("Post creat correctament!");
-                    window.location.reload();
+                if (data.status === "success") { // Comprova si la resposta és d'èxit
+                    alert("Post creat correctament!"); // Mostra missatge d'èxit
+                    window.location.reload(); // Actualitza la pàgina
                 } else {
-                    alert("Error: " + data.message);
+                    alert("Error: " + data.message); // Mostra missatge d'error
                 }
             } catch (error) {
-                alert("Error: " + error.message);
+                alert("Error: " + error.message); // Mostra error en cas d'excepció
             }
         });
     </script>

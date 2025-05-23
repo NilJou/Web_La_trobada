@@ -1,65 +1,64 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detall de la Col·lecció</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='colleccio_detall_style.css') }}">
+    <meta charset="UTF-8"> <!-- Codificació de caràcters -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive per a mòbils -->
+    <title>Detall de la Col·lecció</title> <!-- Títol de la pàgina -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}"> <!-- CSS base -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='colleccio_detall_style.css') }}"> <!-- CSS detall col·lecció -->
 </head>
 
 <body>
-    <nav class="navbar">
+    <nav class="navbar"> <!-- Barra de navegació -->
         <div class="logo">La trobada</div> 
-        
-        <div class="nav-links">
+        <div class="nav-links"> <!-- Enllaços de navegació -->
             <form action="/foro"><input type="submit" value="Foro"></form>
             <form action="/escaner"><input type="submit" value="Escaner"></form>
             <form action="/colleccio"><input type="submit" value="Col·lecció"></form>
             <form action="/xat"><input type="submit" value="Xat"></form>
         </div>
         
-        <div class="user-section">
+        <div class="user-section"> <!-- Secció usuari -->
             <div class="user-icon">U</div>
             <form action="/usuari"><input type="submit" value="Usuari"></form>
         </div>
     </nav>
 
-    <main class="main-content">
-        {% if colleccio %}
-            <div class="carta-header">
-                <h1>{{ colleccio.nom }}</h1>
-                <span>{{ colleccio.quantitat }} cartes</span>
+    <main class="main-content"> <!-- Contingut principal -->
+        {% if colleccio %} <!-- Comprova col·lecció carregada -->
+            <div class="carta-header"> <!-- Capçalera col·lecció -->
+                <h1>{{ colleccio.nom }}</h1> <!-- Nom col·lecció -->
+                <span>{{ colleccio.quantitat }} cartes</span> <!-- Nombre cartes -->
             </div>
 
-            {% if success %}
+            {% if success %} <!-- Missatge d'èxit -->
                 <div class="alert success">{{ success }}</div>
             {% endif %}
-            {% if error %}
+            {% if error %} <!-- Missatge d'error -->
                 <div class="alert error">{{ error }}</div>
             {% endif %}
 
-            {% if cartes %}
-                <div class="carta-grid">
-                    {% for carta in cartes %}
-                        <div class="carta-card">
-                            <img src="{{ carta.imatge_url }}" alt="Imatge carta" class="carta-image">
-                            <h3 class="carta-title">{{ carta.nom }}</h3>
+            {% if cartes %} <!-- Llista de cartes visibles -->
+                <div class="carta-grid"> 
+                    {% for carta in cartes %} <!-- Itera cartes -->
+                        <div class="carta-card"> <!-- Targeta carta -->
+                            <img src="{{ carta.imatge_url }}" alt="Imatge carta" class="carta-image"> <!-- Imatge carta -->
+                            <h3 class="carta-title">{{ carta.nom }}</h3> <!-- Nom carta -->
                         </div>
                     {% endfor %}
                 </div>
-            {% else %}
-                <div class="empty-cards">
+            {% else %} <!-- No hi ha cartes -->
+                <div class="empty-cards"> <!-- Missatge col·lecció buida -->
                     <img src="{{ url_for('static', filename='images/empty-collection.svg') }}" alt="Cap carta">
                     <h3>Encara no hi ha cartes en aquesta col·lecció</h3>
                     <p>Afegeix-ne algunes per començar!</p>
                 </div>
             {% endif %}
-        {% else %}
+        {% else %} <!-- Error càrrega col·lecció -->
             <div class="alert error">No s'ha pogut carregar la col·lecció.</div>
         {% endif %}
 
-        <a href="/colleccio" class="back-link">← Tornar a les col·leccions</a>
+        <a href="/colleccio" class="back-link">← Tornar a les col·leccions</a> <!-- Enllaç tornar -->
     </main>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* Estilo tipo foro/feed */
+/* Estil per al feed de col·leccions amb disposició vertical i espai entre elements */
 .colleccions-feed {
     display: flex;
     flex-direction: column;
@@ -6,6 +6,7 @@
     margin-top: 20px;
 }
 
+/* Estil per a cada post de col·lecció */
 .colleccio-post {
     background: white;
     border-radius: 12px;
@@ -14,6 +15,7 @@
     border: 1px solid #eaeaea;
 }
 
+/* Capçalera del post amb avatar d'usuari i informació */
 .post-header {
     display: flex;
     align-items: center;
@@ -21,6 +23,7 @@
     margin-bottom: 15px;
 }
 
+/* Estil per a l'avatar d'usuari, amb fons i text centrats */
 .user-avatar {
     width: 40px;
     height: 40px;
@@ -34,11 +37,13 @@
     flex-shrink: 0;
 }
 
+/* Informació del post organitzada en columna */
 .post-info {
     display: flex;
     flex-direction: column;
 }
 
+/* Estil per al nom d'usuari i la data del post */
 .username {
     font-weight: 600;
     color: #333;
@@ -49,16 +54,19 @@
     color: #888;
 }
 
+/* Títol del contingut del post amb estil */
 .post-content h3 {
     margin: 0 0 10px 0;
     font-size: 1.2rem;
     color: #333;
 }
 
+/* Estadístiques de la col·lecció amb marges */
 .collection-stats {
     margin-top: 10px;
 }
 
+/* Estil per al comptador de cartes dins de la col·lecció */
 .card-count {
     background-color: #f3f0ff;
     color: #6750a4;
@@ -68,6 +76,7 @@
     font-weight: 500;
 }
 
+/* Accions del post amb espai i separador superior */
 .post-actions {
     display: flex;
     gap: 10px;
@@ -76,6 +85,7 @@
     border-top: 1px solid #f0f0f0;
 }
 
+/* Estil per als botons d'acció amb efectes hover */
 .action-btn {
     display: flex;
     align-items: center;
@@ -94,21 +104,24 @@
     background-color: #f5f5f5;
 }
 
+/* Estil per a les icones dins dels botons d'acció */
 .action-btn svg {
     width: 16px;
     height: 16px;
 }
 
+/* Estil per al botó de eliminar amb efecte hover */
 .delete-btn:hover {
     background-color: #ffebee;
     color: #d32f2f;
 }
 
-/* Estilo cuadrícula de col·leccions */
+/* Estil per a la quadrícula de col·leccions amb marges */
 .colleccions-container {
     margin-top: 2rem;
 }
 
+/* Disseny de la quadrícula amb columnes adaptatives */
 .colleccions-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -116,6 +129,7 @@
     margin-top: 20px;
 }
 
+/* Estil per a cada targeta de col·lecció amb ombres i transicions */
 .colleccio-card {
     background: #fff;
     border-radius: 12px;
@@ -138,6 +152,7 @@
     transform: translateY(-4px);
 }
 
+/* Botó de eliminar dins de la targeta amb posició absoluta */
 .colleccio-card .delete-btn {
     position: absolute;
     top: 10px;
@@ -156,13 +171,13 @@
     color: #d32f2f;
 }
 
-/* Responsive */
+/* Estils responsive */
 @media (max-width: 768px) {
     .colleccio-post {
-        padding: 15px;
+        padding: 15px; /* Redueix el padding per a pantalles petites */
     }
 
     .post-actions {
-        flex-wrap: wrap;
+        flex-wrap: wrap; /* Permet que les accions es wrapin en pantalles petites */
     }
 }

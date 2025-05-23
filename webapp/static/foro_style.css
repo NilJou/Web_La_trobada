@@ -1,4 +1,4 @@
-/* Estilos específicos para el foro */
+/* Contenidor principal del fòrum amb estils de disposició i marges centrats */
 .forum-container {
     display: flex;
     flex-direction: column;
@@ -10,6 +10,7 @@
     padding: 0 15px;
 }
 
+/* Estils dels posts del fòrum */
 .forum-post {
     background-color: white;
     border-radius: 8px;
@@ -26,6 +27,7 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
+/* Capçalera del post amb avatar d'usuari, nom i data */
 .post-header {
     display: flex;
     align-items: center;
@@ -60,12 +62,14 @@
     font-style: italic;
 }
 
+/* Contingut del post amb alineació i mida de línia */
 .post-content {
     padding: 0;
     margin: 0;
     line-height: 1.3;
 }
 
+/* Barra d'accions per a cada post amb espais i separadors */
 .post-actions {
     display: flex;
     gap: 20px;
@@ -75,6 +79,7 @@
     padding-top: 15px;
 }
 
+/* Botons d'acció amb estil transparent, canvi de color i animacions */
 .action-btn {
     background: none;
     border: none;
@@ -99,6 +104,7 @@
     font-size: 1.1rem;
 }
 
+/* Botó principal "nova publicació" amb estil i animacions */
 .new-post {
     background-color: #6750a4;
     color: white;
@@ -119,6 +125,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Estils per als títols i subtítols del fòrum */
 .forum-title {
     text-align: center;
     margin-bottom: 10px;
@@ -138,7 +145,7 @@
     line-height: 1.5;
 }
 
-/* Estilos para el modal de nuevo post */
+/* Modal per a nova publicació */
 .post-modal {
     display: none;
     position: fixed;
@@ -152,6 +159,7 @@
     align-items: center;
 }
 
+/* Contingut del modal */
 .modal-content {
     background-color: white;
     padding: 30px;
@@ -161,6 +169,7 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* Header del modal amb títol i botó de tancament */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -182,12 +191,14 @@
     color: #888;
 }
 
+/* Formulari de nova publicació amb organització vertical */
 .post-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Inputs del formulari amb estil i efectes en focus */
 .post-input {
     width: 100%;
     padding: 12px 15px;
@@ -205,6 +216,7 @@
     box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
 }
 
+/* Botó per enviar la publicació amb estil i animacions */
 .post-submit {
     background-color: #6750a4;
     color: white;
@@ -222,7 +234,7 @@
     background-color: #5a4490;
 }
 
-/* Estilos para mensajes de error/éxito en el foro */
+/* Estils per a missatges d'alerta d'error i èxit al fòrum */
 .forum-alert {
     padding: 12px 15px;
     margin-bottom: 20px;
@@ -243,7 +255,7 @@
     border-left: 4px solid #2e7d32;
 }
 
-/* Responsive design */
+/* Adaptació responsive */
 @media (max-width: 768px) {
     .forum-container {
         padding: 0 10px;
